@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T19:14:42.781Z",
+  "generatedAt": "2026-10-30T19:27:46.053Z",
   "hub": {
     "version": "1.0.2",
     "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/hub-v1.0.2/RobloxieHub-Setup-1.0.2.exe",
@@ -37,14 +37,14 @@
       "icon": "https://yutsioff.github.io/roblox-animation-studio.png",
       "homepage": "https://yutsioff.github.io/#/roblox-animation-studio",
       "minHub": "1.0.0",
-      "version": "1.0.3",
-      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.3/roblox-animation-studio-1.0.3.zip",
-      "sha256": "cbae34632bfb2a03abeeae193a7e8655393de60e8f4aa840415e0ee875c6e7c3",
-      "size": 1404244,
+      "version": "1.0.4",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.4/roblox-animation-studio-1.0.4.zip",
+      "sha256": "07c788abb3f45d16eac97bcc594afbd7d09daeb53daff38dd66d2e0097fd768f",
+      "size": 1407676,
       "notes": [
-        "Les animations du modèle sont importées depuis Studio (Animation Editor, KeyframeSequences du modèle, objets Animation)",
-        "Plugin 1.0.1 : lecture des meshes plus tolérante et raison affichée en cas d'échec (redémarrez Studio après la mise à jour)",
-        "Le modèle reçu est cadré au centre de la vue"
+        "Formes et textures réelles : Fichier → « Appliquer formes et textures d'un export OBJ de Studio » (clic droit → Exporter la sélection dans Studio)",
+        "Textures des SurfaceAppearance lues par le plugin (1.0.2)",
+        "Les meshes se téléchargent automatiquement après une connexion Roblox avec l'option meshes"
       ]
     }
   ]
