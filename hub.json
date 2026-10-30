@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "generatedAt": "2026-10-30T14:21:14.205Z",
+  "hub": {
+    "version": "1.0.0",
+    "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/hub-v1.0.0/RobloxieHub-Setup-1.0.0.exe",
+    "sha256": "2a99888524b5d4202df0d432c496dab94a1a3f14779bdd4ee372c027a5708641",
+    "size": 104931678,
+    "notes": [
+      "Première version de Robloxie Hub : installation, lancement et mises à jour de vos outils en un clic"
+    ]
+  },
+  "tools": [
+    {
+      "id": "roblox-ui-studio",
+      "name": "Roblox UI Studio",
+      "tagline": "Créez des interfaces Roblox animées, sans coder.",
+      "description": "Éditeur visuel de ScreenGui : canvas, animations, tilt 3D, GFX, polices, interactions, export LuaU et plugin Roblox Studio.",
+      "icon": "https://yutsioff.github.io/roblox-ui-studio.png",
+      "homepage": "https://yutsioff.github.io/#/roblox-ui-studio",
+      "minHub": "1.0.0",
+      "version": "1.7.0",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-ui-studio-v1.7.0/roblox-ui-studio-1.7.0.zip",
+      "sha256": "e5efe690bc7cc021003704c506f25330fb9fb68022e219101f491c0b4439d48b",
+      "size": 20452002,
+      "notes": [
+        "Roblox UI Studio s'installe et se met à jour depuis Robloxie Hub",
+        "Vos projets et votre connexion Roblox sont conservés"
+      ]
+    }
+  ]
+}
