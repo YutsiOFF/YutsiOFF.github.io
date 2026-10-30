@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T21:08:07.878Z",
+  "generatedAt": "2026-10-30T23:24:44.006Z",
   "hub": {
     "version": "1.0.2",
     "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/hub-v1.0.2/RobloxieHub-Setup-1.0.2.exe",
@@ -37,14 +37,13 @@
       "icon": "https://yutsioff.github.io/roblox-animation-studio.png",
       "homepage": "https://yutsioff.github.io/#/roblox-animation-studio",
       "minHub": "1.0.0",
-      "version": "1.0.9",
-      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.9/roblox-animation-studio-1.0.9.zip",
-      "sha256": "2481cf68419982db4b53648348422cb22f47d637601083ffda4e3d2f9863a947",
-      "size": 1411347,
+      "version": "1.0.10",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.10/roblox-animation-studio-1.0.10.zip",
+      "sha256": "23261d6df96116d8fe2d2792b78a0c27aa6af363b06d525d7a13eee8ec5151ef",
+      "size": 1412622,
       "notes": [
-        "Clic droit sur la timeline : ajouter une clé (sélection ou tout le modèle), pose de repos, coller, supprimer",
-        "Corrigé : une rotation faite plus tard (ex. Y à 2 s) ne modifie plus la pose de départ",
-        "Sélection multiple : chaque pièce sélectionnée reçoit sa clé ; Maj / Ctrl + clic sélectionne même sous le gizmo"
+        "Corrigé : vue 3D grise à l'ouverture quand le modèle contient une pièce très éloignée (caméra, pièce restée ailleurs dans la place)",
+        "Vue 3D plus robuste : valeurs invalides réparées au chargement, message et bouton « Réinitialiser la vue » au lieu d'un écran gris"
       ]
     }
   ]
