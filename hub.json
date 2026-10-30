@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T18:35:29.009Z",
+  "generatedAt": "2026-10-30T19:05:16.172Z",
   "hub": {
     "version": "1.0.2",
     "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/hub-v1.0.2/RobloxieHub-Setup-1.0.2.exe",
@@ -23,7 +23,7 @@
       "minHub": "1.0.0",
       "version": "1.7.1",
       "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-ui-studio-v1.7.1/roblox-ui-studio-1.7.1.zip",
-      "sha256": "1f9369847d2f861095b1a5cb057062d0b400c6b6b71fec5e9d30e440e9373499",
+      "sha256": "2c4d23a9ad9b839555fdef01daa7c8edfe002eee1e2255817e3bbc3e44a97503",
       "size": 20452500,
       "notes": [
         "La connexion Roblox est partagée avec Roblox Animation Studio (même application OAuth)"
@@ -37,12 +37,13 @@
       "icon": "https://yutsioff.github.io/roblox-animation-studio.png",
       "homepage": "https://yutsioff.github.io/#/roblox-animation-studio",
       "minHub": "1.0.0",
-      "version": "1.0.1",
-      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.1/roblox-animation-studio-1.0.1.zip",
-      "sha256": "2a1b7ff9c170dd47a79c8fd062663723de65a2861d50ee60a6de45390c620c9c",
-      "size": 1401486,
+      "version": "1.0.2",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.2/roblox-animation-studio-1.0.2.zip",
+      "sha256": "eb9b1e61d2941a85a5d7368fa49533c727114b629191cd0602f4219121303f5c",
+      "size": 1401915,
       "notes": [
-        "Connexion Roblox avec les mêmes permissions que Roblox UI Studio par défaut ; le téléchargement des meshes (legacy-asset:manage) devient une option"
+        "Envoi depuis Studio corrigé pour les modèles dont les noms contiennent des accents (« Données incomplètes »)",
+        "Plusieurs pièces sélectionnées bougent ensemble avec le gizmo (chacune autour de son articulation)"
       ]
     }
   ]
