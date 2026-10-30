@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T19:27:46.053Z",
+  "generatedAt": "2026-10-30T19:39:42.969Z",
   "hub": {
     "version": "1.0.2",
     "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/hub-v1.0.2/RobloxieHub-Setup-1.0.2.exe",
@@ -21,12 +21,12 @@
       "icon": "https://yutsioff.github.io/roblox-ui-studio.png",
       "homepage": "https://yutsioff.github.io/#/roblox-ui-studio",
       "minHub": "1.0.0",
-      "version": "1.7.1",
-      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-ui-studio-v1.7.1/roblox-ui-studio-1.7.1.zip",
-      "sha256": "2c4d23a9ad9b839555fdef01daa7c8edfe002eee1e2255817e3bbc3e44a97503",
-      "size": 20452500,
+      "version": "1.7.2",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-ui-studio-v1.7.2/roblox-ui-studio-1.7.2.zip",
+      "sha256": "89cc8a55aad5dfe13063af91564982c0b624a4a8076b7ab00fe3c853995391c5",
+      "size": 20452631,
       "notes": [
-        "La connexion Roblox est partagée avec Roblox Animation Studio (même application OAuth)"
+        "Les permissions renvoyées par Roblox sous la forme « asset:read,write » sont bien reconnues (plus de faux avertissement asset:write)"
       ]
     },
     {
@@ -37,14 +37,13 @@
       "icon": "https://yutsioff.github.io/roblox-animation-studio.png",
       "homepage": "https://yutsioff.github.io/#/roblox-animation-studio",
       "minHub": "1.0.0",
-      "version": "1.0.4",
-      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.4/roblox-animation-studio-1.0.4.zip",
-      "sha256": "07c788abb3f45d16eac97bcc594afbd7d09daeb53daff38dd66d2e0097fd768f",
-      "size": 1407676,
+      "version": "1.0.5",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.5/roblox-animation-studio-1.0.5.zip",
+      "sha256": "22921ba67fe54e776a4f6859d44a1a3d99323d98d8dce489bf90f6996bce534e",
+      "size": 1407838,
       "notes": [
-        "Formes et textures réelles : Fichier → « Appliquer formes et textures d'un export OBJ de Studio » (clic droit → Exporter la sélection dans Studio)",
-        "Textures des SurfaceAppearance lues par le plugin (1.0.2)",
-        "Les meshes se téléchargent automatiquement après une connexion Roblox avec l'option meshes"
+        "La permission legacy-asset:manage accordée par Roblox est bien reconnue (Roblox l'écrit « asset:read,write »)",
+        "Bouton « Ajouter le téléchargement des meshes » quand on est déjà connecté ; la connexion demande les meshes par défaut"
       ]
     }
   ]
