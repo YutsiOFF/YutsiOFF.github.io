@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T14:21:14.205Z",
+  "generatedAt": "2026-10-30T17:17:13.067Z",
   "hub": {
-    "version": "1.0.0",
-    "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/hub-v1.0.0/RobloxieHub-Setup-1.0.0.exe",
-    "sha256": "2a99888524b5d4202df0d432c496dab94a1a3f14779bdd4ee372c027a5708641",
-    "size": 104931678,
+    "version": "1.0.1",
+    "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/hub-v1.0.1/RobloxieHub-Setup-1.0.1.exe",
+    "sha256": "b9623b339bcfca9aaa31e672552685488981d38348e09df58fcaddbb1ecc63b6",
+    "size": 104898055,
     "notes": [
-      "Première version de Robloxie Hub : installation, lancement et mises à jour de vos outils en un clic"
+      "Une mise à jour d'outil installée pendant qu'il est ouvert n'efface plus la version en cours d'utilisation"
     ]
   },
   "tools": [
@@ -19,13 +19,30 @@
       "icon": "https://yutsioff.github.io/roblox-ui-studio.png",
       "homepage": "https://yutsioff.github.io/#/roblox-ui-studio",
       "minHub": "1.0.0",
-      "version": "1.7.0",
-      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-ui-studio-v1.7.0/roblox-ui-studio-1.7.0.zip",
-      "sha256": "e5efe690bc7cc021003704c506f25330fb9fb68022e219101f491c0b4439d48b",
-      "size": 20452002,
+      "version": "1.7.1",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-ui-studio-v1.7.1/roblox-ui-studio-1.7.1.zip",
+      "sha256": "2c4d23a9ad9b839555fdef01daa7c8edfe002eee1e2255817e3bbc3e44a97503",
+      "size": 20452500,
       "notes": [
-        "Roblox UI Studio s'installe et se met à jour depuis Robloxie Hub",
-        "Vos projets et votre connexion Roblox sont conservés"
+        "La connexion Roblox est partagée avec Roblox Animation Studio (même application OAuth)"
+      ]
+    },
+    {
+      "id": "roblox-animation-studio",
+      "name": "Roblox Animation Studio",
+      "tagline": "Animez personnages, armes et ViewModels FPS, puis renvoyez tout dans Studio.",
+      "description": "Éditeur d'animation 3D : import depuis Studio avec les Motor6D, timeline à keyframes, graph editor, vue FPS, export KeyframeSequence / CurveAnimation et plugin Studio dédié.",
+      "icon": "https://yutsioff.github.io/roblox-animation-studio.png",
+      "homepage": "https://yutsioff.github.io/#/roblox-animation-studio",
+      "minHub": "1.0.0",
+      "version": "1.0.0",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.0/roblox-animation-studio-1.0.0.zip",
+      "sha256": "4111fe3b896090cbaafc89e0bcad9d0e9e2b39a2185e239d23e80d8e11c7d842",
+      "size": 1401404,
+      "notes": [
+        "Première version : import depuis Roblox Studio, animation des Motor6D, timeline, courbes Bézier, vue FPS",
+        "Export vers Studio (KeyframeSequence / CurveAnimation) avec un plugin dédié",
+        "Même connexion Roblox que Roblox UI Studio"
       ]
     }
   ]
