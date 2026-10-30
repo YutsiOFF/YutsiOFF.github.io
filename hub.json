@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T20:18:23.026Z",
+  "generatedAt": "2026-10-30T20:41:01.880Z",
   "hub": {
     "version": "1.0.2",
     "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/hub-v1.0.2/RobloxieHub-Setup-1.0.2.exe",
@@ -37,13 +37,14 @@
       "icon": "https://yutsioff.github.io/roblox-animation-studio.png",
       "homepage": "https://yutsioff.github.io/#/roblox-animation-studio",
       "minHub": "1.0.0",
-      "version": "1.0.7",
-      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.7/roblox-animation-studio-1.0.7.zip",
-      "sha256": "3fcfbf931e1f5bdc2891a39b17f59767180cedf280ddb6be27456680b7a66271",
-      "size": 1409128,
+      "version": "1.0.8",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.8/roblox-animation-studio-1.0.8.zip",
+      "sha256": "d2e58fc8d407a655049644ea1d90d32adccaedb96ae2c8d7316c294d90161493",
+      "size": 1410532,
       "notes": [
-        "Corrigé : après avoir tapé un numéro d'image, appuyer sur E / W / R remettait l'image à 0 et la rotation écrasait les clés du début",
-        "Rotation d'une sélection multiple sans déformation : une pièce dont le parent est aussi sélectionné suit son parent au lieu de tourner deux fois"
+        "Bibliothèque Roblox : tout ce qui est envoyé depuis Studio est gardé (renommer, rechercher, retirer) et réutilisable",
+        "« Ajouter au projet » : combinez plusieurs modèles (arme + ViewModel…) sans rien effacer ; une mise à jour depuis un autre modèle ne supprime plus le contenu du projet",
+        "Tests automatiques de l'animation à la souris (gizmo, clés, lecture, sélection multiple) sur R15 et ViewModel"
       ]
     }
   ]
