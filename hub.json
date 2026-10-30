@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T19:39:42.969Z",
+  "generatedAt": "2026-10-30T19:49:31.761Z",
   "hub": {
     "version": "1.0.2",
     "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/hub-v1.0.2/RobloxieHub-Setup-1.0.2.exe",
@@ -37,13 +37,13 @@
       "icon": "https://yutsioff.github.io/roblox-animation-studio.png",
       "homepage": "https://yutsioff.github.io/#/roblox-animation-studio",
       "minHub": "1.0.0",
-      "version": "1.0.5",
-      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.5/roblox-animation-studio-1.0.5.zip",
-      "sha256": "22921ba67fe54e776a4f6859d44a1a3d99323d98d8dce489bf90f6996bce534e",
-      "size": 1407838,
+      "version": "1.0.6",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.6/roblox-animation-studio-1.0.6.zip",
+      "sha256": "fde8841cae76d32a29b9bc8056ba54fd237d90108e34d86ba10c6bcb29386746",
+      "size": 1408808,
       "notes": [
-        "La permission legacy-asset:manage accordée par Roblox est bien reconnue (Roblox l'écrit « asset:read,write »)",
-        "Bouton « Ajouter le téléchargement des meshes » quand on est déjà connecté ; la connexion demande les meshes par défaut"
+        "Vitesse de la caméra réglable (zoom molette, déplacement, rotation) : icône jauge en haut à droite du viewport ou Réglages",
+        "Zoom à la molette plus doux par défaut, vers le curseur, et plafonné pour les molettes rapides / pavés tactiles"
       ]
     }
   ]
