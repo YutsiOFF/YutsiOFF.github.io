@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T20:41:01.880Z",
+  "generatedAt": "2026-10-30T21:08:07.878Z",
   "hub": {
     "version": "1.0.2",
     "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/hub-v1.0.2/RobloxieHub-Setup-1.0.2.exe",
@@ -37,14 +37,14 @@
       "icon": "https://yutsioff.github.io/roblox-animation-studio.png",
       "homepage": "https://yutsioff.github.io/#/roblox-animation-studio",
       "minHub": "1.0.0",
-      "version": "1.0.8",
-      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.8/roblox-animation-studio-1.0.8.zip",
-      "sha256": "d2e58fc8d407a655049644ea1d90d32adccaedb96ae2c8d7316c294d90161493",
-      "size": 1410532,
+      "version": "1.0.9",
+      "url": "https://github.com/YutsiOFF/YutsiOFF.github.io/releases/download/roblox-animation-studio-v1.0.9/roblox-animation-studio-1.0.9.zip",
+      "sha256": "2481cf68419982db4b53648348422cb22f47d637601083ffda4e3d2f9863a947",
+      "size": 1411347,
       "notes": [
-        "Bibliothèque Roblox : tout ce qui est envoyé depuis Studio est gardé (renommer, rechercher, retirer) et réutilisable",
-        "« Ajouter au projet » : combinez plusieurs modèles (arme + ViewModel…) sans rien effacer ; une mise à jour depuis un autre modèle ne supprime plus le contenu du projet",
-        "Tests automatiques de l'animation à la souris (gizmo, clés, lecture, sélection multiple) sur R15 et ViewModel"
+        "Clic droit sur la timeline : ajouter une clé (sélection ou tout le modèle), pose de repos, coller, supprimer",
+        "Corrigé : une rotation faite plus tard (ex. Y à 2 s) ne modifie plus la pose de départ",
+        "Sélection multiple : chaque pièce sélectionnée reçoit sa clé ; Maj / Ctrl + clic sélectionne même sous le gizmo"
       ]
     }
   ]
