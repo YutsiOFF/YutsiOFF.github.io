@@ -1,19 +1,23 @@
 # SpotifyGratuit 🎵
 
-> ✅ **Déployé !** → https://yutsioff.github.io/music/
+> ✅ **En ligne** → https://yutsioff.github.io/music/
 
-Lecteur de musique **PWA** (PC + téléphone), avec interface inspirée de
-[MusicPlayer-Web](https://github.com/vittorioPiotti/MusicPlayer-Web) :
-navigation Accueil / Recherche / Bibliothèque, mini-lecteur, lecteur plein
-écran, **mode clair/sombre** et **lecture en arrière-plan avec écran
-verrouillé**.
+Lecteur de musique **PWA** (PC + téléphone) avec **catalogue complet** :
+tendances, playlists éditoriales (Today's Top Hits, RapCaviar, Viva Latino,
+mint…), pages **artiste** (auditeurs/mois, discographie complète, singles,
+artistes liés), pages **album** (avec date, label, écoutes), **catalogue par
+genre**, recherche titres + artistes+ extraits gratuits. Interface inspirée de
+[MusicPlayer-Web](https://github.com/vittorioPiotti/MusicPlayer-Web) avec
+sidebar desktop / navbar mobile, héros d'en-tête, cartes flottantes,
+thème clair/sombre, mini-lecteur + lecteur plein écran et **lecture écran
+verrouillé** (Media Session API).
 
 Recherche musicale **hybride** :
 1. **SpotAPI** ([Aran404/SpotAPI](https://github.com/Aran404/SpotAPI)) via une
-   **passerelle locale** qui tourne sur le PC (`server/spotapi_gateway.py`) —
-   résultats du **catalogue Spotify** avec pochettes, joués par le lecteur
-   embed officiel Spotify ;
-2. sinon **API iTunes Search** (gratuite, sans clé) : extraits jouables de 30 s.
+   **passerelle locale** (dossier `server/`) qui expose le **catalogue Spotify**
+   : recherche titres + artistes, playlists, albums, discographies.
+   Chaque résultat s'écoute via le lecteur embed officiel Spotify, sans compte.
+2. sinon/et **API iTunes Search** (gratuite, sans clé) : extraits jouables 30 s.
 
 ---
 
