@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>SpotifyGratuit — Lecteur de musique</title>
-  <meta name="description" content="Lecteur de musique PWA — fonctionne aussi écran verrouillé. Interface inspirée de MusicPlayer-Web." />
-  <meta name="theme-color" content="#121212" />
-
-  <!-- PWA -->
+  <title>SpotifyGratuit — Catalogue de musique</title>
+  <meta name="description" content="Catalogue complet de musique : tendances, playlists, albums, artistes. PWA lecture en fond, écran verrouillé." />
+  <meta name="theme-color" content="#0b0b0f" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icons/icon-192.png" type="image/png" />
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
@@ -15,113 +13,155 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="SpotifyGratuit" />
-
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <!-- ===== HEADER ===== -->
-  <header class="app-header">
-    <div class="header-left">
-      <button class="icon-btn" id="btn-menu" aria-label="Menu">☰</button>
-      <h1 class="logo">Spotify<span>Gratuit</span></h1>
-    </div>
-    <div class="header-right">
-      <button class="btn btn-install" id="btn-install" hidden>⤓ Installer</button>
-      <button class="icon-btn" id="btn-theme-toggle" aria-label="Basculer thème clair/sombre">🌙</button>
-    </div>
-  </header>
+<div class="app-shell">
 
-  <!-- ===== CONTENU ===== -->
-  <main id="main">
-    <!-- ACCUEIL -->
-    <section id="view-home" class="view active">
-      <div class="hero">
-        <h2>Bonjour 👋</h2>
-        <p>Recherche ou écoute depuis ta bibliothèque — même écran verrouillé.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" data-action="go-search">🔍 Rechercher</button>
-          <button class="btn btn-secondary" data-action="go-import">🎧 Importer mes fichiers</button>
-          <button class="btn btn-secondary" data-action="go-addlink">🔗 Ajouter un lien Spotify</button>
-        </div>
-      </div>
-      <h3 class="section-title" id="home-recent-title" hidden>Reprendre la lecture</h3>
-      <div class="track-grid" id="home-recent"></div>
-      <h3 class="section-title">Ma bibliothèque</h3>
-      <div class="track-grid" id="home-library"></div>
-    </section>
-
-    <!-- RECHERCHE -->
-    <section id="view-search" class="view">
-      <div class="search-box">
-        <input type="search" id="search-input" placeholder="Rechercher un titre, un artiste, un album…" autocomplete="off" />
-        <p class="search-hint">Fourni par l'API iTunes Search (gratuit, sans clé). Ecoutes gratuites (aperçus 30 s, légal).</p>
-      </div>
-      <div class="track-grid" id="search-results"></div>
-      <p id="search-empty" class="empty-msg">Tape des mots-clés pour lancer la recherche…</p>
-    </section>
-
-    <!-- BIBLIOTHÈQUE -->
-    <section id="view-library" class="view">
-      <div class="library-actions">
-        <button class="btn btn-primary" data-action="import-files">+ Importer des fichiers</button>
-        <button class="btn btn-secondary" data-action="add-link">+ Lien Spotify</button>
-        <input type="file" id="file-input" accept="audio/*" multiple hidden />
-      </div>
-      <ul class="track-list" id="library-list"></ul>
-      <p id="library-empty" class="empty-msg">Bibliothèque vide. Importe des fichiers ou ajoute des liens Spotify.</p>
-    </section>
-  </main>
-
-  <!-- ===== LECTEUR PLEIN ÉCRAN ===== -->
-  <div id="player-full" class="player-full" hidden>
-    <button class="icon-btn player-close" id="player-close" aria-label="Fermer le lecteur">▼</button>
-    <div class="player-art">
-      <img id="pf-art" src="./icons/icon-512.png" alt="Pochette" />
-      <!-- Lecteur Spotify officiel (pas de compte requis) -->
-      <div id="pf-embed" class="embed-box" hidden></div>
+  <!-- ===== SIDEBAR (desktop) ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-mark">♫</span>
+      <strong class="logo">Spotify<span>Gratuit</span></strong>
     </div>
-    <div class="player-meta">
-      <div class="player-titles">
-        <strong id="pf-title" contenteditable="false"></strong>
-        <span id="pf-artist"></span>
-      </div>
-      <div class="player-progress" id="pf-progress-row">
-        <span id="pf-cur">0:00</span>
-        <input type="range" id="pf-seek" min="0" max="1000" value="0" />
-        <span id="pf-dur">0:00</span>
-      </div>
-      <div class="player-controls">
-        <button class="icon-btn big" id="pf-prev" aria-label="Précédent">⏮</button>
-        <button class="icon-btn main" id="pf-play" aria-label="Lire / Pause">▶</button>
-        <button class="icon-btn big" id="pf-next" aria-label="Suivant">⏭</button>
-      </div>
-      <p class="pf-note" id="pf-note"></p>
-    </div>
-  </div>
-
-  <!-- ===== MINI LECTEUR ===== -->
-  <footer class="app-footer">
-    <div class="mini-player" id="mini-player" hidden>
-      <img id="mini-art" src="./icons/icon-192.png" alt="" />
-      <div class="mini-meta" data-action="open-player">
-        <span id="mini-title">—</span>
-        <small id="mini-artist">—</small>
-      </div>
-      <button class="icon-btn" id="mini-play" aria-label="Lire / Pause">▶</button>
-      <button class="icon-btn" id="mini-next" aria-label="Suivant">⏭</button>
-    </div>
-    <nav class="app-nav">
-      <button class="nav-btn active" data-view="home">🏠 <span>Accueil</span></button>
-      <button class="nav-btn" data-view="search">🔍 <span>Recherche</span></button>
-      <button class="nav-btn" data-view="library">📚 <span>Biblio</span></button>
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-nav="home">🏠 Accueil</button>
+      <button class="nav-btn" data-nav="search">🔍 Recherche</button>
+      <button class="nav-btn" data-nav="catalog">🌐 Catalogue</button>
+      <button class="nav-btn" data-nav="library">📚 Bibliothèque</button>
     </nav>
-  </footer>
+    <div class="sidebar-foot">
+      <span class="dot off" id="gw-dot" title="Statut de la passerelle SpotAPI"></span>
+      <small id="gw-label">Passerelle SpotAPI</small>
+    </div>
+  </aside>
 
-  <!-- Éléments techniques (pas d'interface) -->
-  <audio id="audio" preload="metadata"></audio>
+  <!-- ===== COLONNE PRINCIPALE ===== -->
+  <div class="main-col">
+    <header class="app-header">
+      <div class="header-left">
+        <button class="btn btn-pill" id="btn-install" hidden>⤓ Installer l'app</button>
+        <button class="btn btn-pill ghost" id="btn-install-2" onclick="App.showManualInstallHelp()" title="Comment installer sur téléphone / PC">📱 Installer</button>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn" id="btn-theme-toggle" aria-label="Thème clair/sombre">🌙</button>
+      </div>
+    </header>
 
-  <script src="./js/library.js"></script>
-  <script src="./js/player.js"></script>
-  <script src="./js/app.js"></script>
+    <main id="main">
+
+      <!-- ACCUEIL -->
+      <section id="view-home" class="view active">
+        <div id="hero" class="detail-hero home-hero" style="--hero-img:'none'">
+          <div class="tag">PLAYLIST</div><h1>Chargement…</h1>
+        </div>
+
+        <div id="offline-banner" class="notice" hidden>
+          ⚠️ <strong>Passerelle SpotAPI éteinte.</strong> Le catalogue Spotify complet (tendances, playlists, albums, artistes) nécessite la passerelle locale :
+          <code>powershell -File server\start-gateway.ps1</code>.
+          La <strong>Recherche</strong> reste disponible (iTunes gratuit) plus ta bibliothèque et liens Spotify.
+        </div>
+
+        <h3 class="row-title" id="trend-title">🔥 Tendances du moment</h3>
+        <div class="scroll-row" id="row-trending"></div>
+
+        <h3 class="row-title">🎧 Playlists populaires</h3>
+        <div class="scroll-row" id="row-playlists"></div>
+
+        <h3 class="row-title">Explorer par genre</h3>
+        <div class="chips" id="genres"></div>
+
+        <h3 class="row-title" id="home-lib-title" hidden>❤️ Reprenez où vous étiez</h3>
+        <div class="scroll-row" id="lib-row"></div>
+      </section>
+
+      <!-- CATALOGUE -->
+      <section id="view-catalog" class="view">
+        <h2 class="page-title">Catalogue</h2>
+        <p class="page-sub">Toutes les playlists par genre — l'infini à portée de main.</p>
+        <div class="loader" data-catalog-loader></div>
+        <div class="genre-grid" id="catalog-grid"></div>
+      </section>
+
+      <!-- RECHERCHE -->
+      <section id="view-search" class="view">
+        <div class="search-box">
+          <input type="search" id="search-input" placeholder="Titre, artiste, album…" autocomplete="off" />
+          <p class="search-hint">Catalogue Spotify via la passerelle SpotAPI + extraits gratuits iTunes.</p>
+        </div>
+        <div id="search-results"></div>
+        <p id="search-empty" class="empty-msg">Tape des mots-clés pour lancer la recherche…</p>
+      </section>
+
+      <!-- BIBLIOTHÈQUE -->
+      <section id="view-library" class="view">
+        <div class="library-actions">
+          <button class="btn btn-primary" data-action="import-files">+ Mes fichiers</button>
+          <button class="btn btn-secondary" data-action="add-link">+ Lien Spotify</button>
+          <input type="file" id="file-input" accept="audio/*" multiple hidden />
+        </div>
+        <ul class="track-list" id="library-list"></ul>
+        <p id="library-empty" class="empty-msg">Bibliothèque vide. Importe des fichiers ou enregistre des résultats de recherche / playlist.</p>
+      </section>
+
+      <!-- PLAYLIST -->
+      <section id="view-playlist" class="view"></section>
+      <!-- ALBUM -->
+      <section id="view-album" class="view"></section>
+      <!-- ARTISTE -->
+      <section id="view-artist" class="view"></section>
+    </main>
+  </div>
+</div>
+
+<!-- ===== LECTEUR PLEIN ÉCRAN ===== -->
+<div id="player-full" class="player-full" hidden>
+  <button class="icon-btn player-close" id="player-close" aria-label="Fermer">▼</button>
+  <div class="player-art">
+    <img id="pf-art" src="./icons/icon-512.png" alt="Pochette" />
+    <div id="pf-embed" class="embed-box" hidden></div>
+  </div>
+  <div class="player-meta">
+    <div class="player-titles">
+      <strong id="pf-title"></strong>
+      <span id="pf-artist"></span>
+    </div>
+    <div class="player-progress" id="pf-progress-row">
+      <span id="pf-cur">0:00</span>
+      <input type="range" id="pf-seek" min="0" max="1000" value="0" />
+      <span id="pf-dur">0:00</span>
+    </div>
+    <div class="player-controls">
+      <button class="icon-btn big" id="pf-prev">⏮</button>
+      <button class="icon-btn main" id="pf-play">▶</button>
+      <button class="icon-btn big" id="pf-next">⏭</button>
+    </div>
+    <p class="pf-note" id="pf-note"></p>
+  </div>
+</div>
+
+<!-- ===== MINI LECTEUR + NAV MOBILE ===== -->
+<footer class="app-footer">
+  <div class="mini-player" id="mini-player" hidden>
+    <img id="mini-art" src="./icons/icon-192.png" alt="" />
+    <div class="mini-meta" data-action="open-player">
+      <span id="mini-title">—</span>
+      <small id="mini-artist">—</small>
+    </div>
+    <button class="icon-btn" id="mini-play" aria-label="Lire/Pause">▶</button>
+    <button class="icon-btn" id="mini-next" aria-label="Suivant">⏭</button>
+  </div>
+  <nav class="app-nav">
+    <button class="nav-btn active" data-nav="home">🏠 <span>Accueil</span></button>
+    <button class="nav-btn" data-nav="search">🔍 <span>Recherche</span></button>
+    <button class="nav-btn" data-nav="catalog">🌐 <span>Catalogue</span></button>
+    <button class="nav-btn" data-nav="library">📚 <span>Biblio</span></button>
+  </nav>
+</footer>
+
+<audio id="audio" preload="metadata"></audio>
+<script src="./js/library.js"></script>
+<script src="./js/player.js"></script>
+<script src="./js/app.js"></script>
 </body>
 </html>
