@@ -1,21 +1,19 @@
 # SpotifyGratuit 🎵
 
+> ✅ **Déployé !** → https://yutsioff.github.io/music/
+
 Lecteur de musique **PWA** (PC + téléphone), avec interface inspirée de
 [MusicPlayer-Web](https://github.com/vittorioPiotti/MusicPlayer-Web) :
 navigation Accueil / Recherche / Bibliothèque, mini-lecteur, lecteur plein
 écran, **mode clair/sombre** et **lecture en arrière-plan avec écran
 verrouillé**.
 
-> ⚠️ **Important — lisible et assumé**
-> - Ce projet *n'utilise pas* SpotAPI pour streame du contenu Spotify :
-> SpotAPI est une **bibliothèque Python** (impossible dans un site GitHub
-> Pages statique) et l'accès à l'API privée de Spotify viole les CGU de
-> Spotify. À la place, l'application utilise le **lecteur embed officiel**
-> de Spotify (aucun compte requis) et une recherche musicale gratuite.
-> - **Pas de suppression de publicités** : forcer Spotify sans pubs =
-> contourner son monétisation, interdit par Spotify (et contraire aux
-> règles de la doc Spicetify elle-même). Le thème Spicetify fourni est
-> purement **visuel**.
+Recherche musicale **hybride** :
+1. **SpotAPI** ([Aran404/SpotAPI](https://github.com/Aran404/SpotAPI)) via une
+   **passerelle locale** qui tourne sur le PC (`server/spotapi_gateway.py`) —
+   résultats du **catalogue Spotify** avec pochettes, joués par le lecteur
+   embed officiel Spotify ;
+2. sinon **API iTunes Search** (gratuite, sans clé) : extraits jouables de 30 s.
 
 ---
 
@@ -25,41 +23,55 @@ verrouillé**.
 SpotifyGratuit/
 ├── index.html                  Page unique de l'app
 ├── manifest.webmanifest        Manifest PWA (icône d'accueil)
-├── sw.js                       Service Worker (cache hors-ligne)
+├── sw.js                       Service Worker (cache hors-ligne + MAJ)
 ├── css/style.css               Styles (thème clair & sombre)
 ├── js/
-│   ├── library.js              Bibliothèque (IndexedDB + localStorage)
+│   ├── library.js              Bibliothèque (IndexedDB) + recherches
 │   ├── player.js               Lecteur + Media Session API
 │   └── app.js                  Navigation, recherche, installation
 ├── icons/                      Icônes PWA (192, 512, maskable, apple)
-└── spicetify/MusicPlayerWeb/   Thème Spicetify (color.ini + user.css)
+├── server/                     ⭐ Passerelle SpotAPI locale
+│   ├── spotapi_gateway.py      Flask + SpotlightAPI + CÔRSE ouvert
+│   ├── start-gateway.ps1       Lanceur 1 double-clic (PowerShell)
+│   └── requirements.txt
+├── spicetify/MusicPlayerWeb/   Thème Spicetify (color.ini + user.css)
+└── install-spicetify.ps1       Installe Spicetify + le thème d'un coup
 ```
 
 ---
 
-## 🚀 1. Publier sur GitHub Pages (github.io)
+## 🔌 0. Le système SpotAPI (PC uniquement)
 
-Tous les chemins dans le code sont **relatifs**, donc les deux options marchent.
+GitHub Pages est **100 % statique** (aucun code serveur possible). Donc la
+recherche SpotAPI tourne comme **passerelle locale** sur ton PC :
 
-**Option A — repo `monpseudo.github.io`** (le site sera à la racine)
-
-1. Crée un dépôt nommé exactement `ton-pseudo.github.io`.
-2. Pousse le contenu de ce dossier :
-
-```bash
-git init
-git add .
-git commit -m "SpotifyGratuit PWA"
-git branch -M main
-git remote add origin https://github.com/ton-pseudo/ton-pseudo.github.io.git
-git push -u origin main
+```powershell
+# au premier lancement / quand tu veux chercher via le catalogue Spotify :
+powershell -ExecutionPolicy Bypass -File server\start-gateway.ps1
 ```
 
-**Option B — n'importe quel nom de repo** (ex. `spotifygratuit`)
+- ✔️ La PWA github.io (ou open depuis http://localhost:8800) détecte la passerelle
+  automatiquement (`/health`) et bilingue : SpotAPI d'abord, iTunes en secours.
+- ✔️ Sans que la passerelle soit lancée, l'application continue de marcher
+  (limité à iTunes + bibliothèque + liens Spotify enregistrés).
+- Telephone : instinctuellement l'https ne peut pas joindre le PC (règle
+  navigateur « contenu mixte + réseau privé »). Pour la recherche SpotAPI
+  sur le téléphone, **ouvre directement `http://<ip-du-PC>:8800` en Wi-Fi**
+  (servi par la passerelle elle-même) et installe la PWA depuis cette URL.
+  Autorise aussi Python dans le pare-feu si demandé au 1er lancement.
 
-1. Pousse le projet dans le repo.
-2. GitHub : **Settings → Pages → Source: Deploy from a branch → main / (root) → Save**.
-3. Ton app sera sur `https://ton-pseudo.github.io/spotifygratuit/`.
+---
+
+## 🚀 1. Déploiement (déjà fait ✅)
+
+Le site est déjà sur **`https://yutsioff.github.io/music/`**
+(sous-dossier du compte `YutsiOFF`, sans toucher au site principal).
+
+Mise à jour future : édite un fichier puis re-pousse via
+`gh api -X PUT repos/YutsiOFF/YutsiOFF.github.io/contents/music/<fichier> -f content=<base64> -f branch=main`
+ou un simple `git push` si Git est installé. Le service worker fait du
+*network-first* sur les fichiers `.html/.js/.css` : les mises à jour s'appliquent
+au 1er rechargement.
 
 ---
 
@@ -102,17 +114,18 @@ Comportement selon la plateforme :
 
 ## 🎧 4. Sources de musique disponibles
 
-1. **Tes fichiers locaux** (`📄 Fichiers`) — glisse-dépose n'importe quel
-   MP3 / M4A / OGG / WAV / FLAC dans l'app. Stockés dans **IndexedDB** (ils
-   restent après un rafraîchissement). Nomme tes fichiers
-   `Artiste - Titre.mp3` pour un affichage propre.
-2. **Aperçus gratuits iTunes** (`▶ Gratuit`) — résultats de la barre de
-   recherche (extrait 30 s / clip gratuit). **100 % légal**, sans compte ni
-   clé API. Le bouton `＋` sauvegarde la piste dans ta bibliothèque.
-3. **Lecteur Spotify officiel** (`Badge Spotify`) — colle un lien
-   `https://open.spotify.com/track/...` (ou album / playlist) dans
-   Bibliothèque → « + Lien Spotify ». La lecture passe par l'**iframe embed
-   officielle**, aucun compte Spotify requis.
+1. **Catalogue Spotify via SpotAPI** (`🟢 Spotify`) — quand la passerelle locale
+   tourne : la recherche interroge le catalogue Spotify (titres, artistes,
+   pochettes) et la lecture passe par l'**iframe embed officielle** de Spotify,
+   sans compte requis.
+2. **Aperçus gratuits iTunes** (`🎵`) — résultats de la barre de recherche
+   (extrait 30 s). **100 % légal**, sans compte ni clé API. Le bouton `＋`
+   sauvegarde la piste dans ta bibliothèque.
+3. **Tes fichiers locaux** (`📄 local`) — glisse-dépose n'importe quel
+   MP3 / M4A / OGG / WAV / FLAC. Stockés dans **IndexedDB** (restent après
+   rafraîchissement). Nom `Artiste - Titre.mp3` recommandé.
+4. **Liens Spotify** — colle `https://open.spotify.com/track/...` (album,
+   playlist) dans Bibliothèque → « + Lien Spotify ».
 
 ---
 
@@ -173,9 +186,12 @@ npx serve .
 
 - **Design d'interface inspiré de**
   [MusicPlayer-Web](https://github.com/vittorioPiotti/MusicPlayer-Web) (GPL-3.0) —
-  ce projet est une réimplémentation indépendante, il ne copie pas son code.
-- Il est **inspiré d'iTunes** selon la notice du repo d'origine.
-- [Spicetify CLI](https://github.com/spicetify/cli) — doc officielle utilisée pour le thème.
-- Recherche musicale via la **[iTunes Search API](https://performance-partners.apple.com/search-api)**
-  d'Apple (gratuite).
+  réimplémentation indépendante, aucun code copié.
+- **[SpotAPI](https://github.com/Aran404/SpotAPI)** (GPL-3.0) — passée en passerelle
+  locale côté PC. Avertissement du projet : l'usage de l'API privée de Spotify
+  peut enfreindre leurs conditions ; à réserver à un usage personnel éducatif.
+- [Spicetify CLI](https://github.com/spicetify/cli) — doc officielle pour le thème.
+- Recherche via la **[iTunes Search API](https://performance-partners.apple.com/search-api)** d'Apple.
 - Lecteur Spotify via l'**iframe embed officielle** `open.spotify.com`.
+- **Pas de suppression de publicités** : le thème Spicetify est purement
+  visuel ; contourner pubs / Premium va à l'encontre des CGU de Spotify.
