@@ -1,0 +1,41 @@
+/* Theme « MusicPlayerWeb » — style inspiré de MusicPlayer-Web (vittorioPiotti)
+   https://spicetify.app/docs/development/themes/
+
+   Astuce : modifie ces variables puis lance `spicetify apply`. */
+
+/* ---------- cartes / albums arrondis ---------- */
+#main .main-card.card,
+#main .main-card-card,
+.main-lookAndFeelsRoot-card {
+  border-radius: 12px !important;
+}
+
+/* ---------- barre de lecture en bas ---------- */
+.Root__now-playing-bar,
+.main-nowPlayingBar-nowPlayingBar {
+  border-top: 1px solid var(--spice-border, rgba(255,255,255,.08));
+  background: var(--spice-player);
+}
+
+/* ---------- boutons verts uniformes ---------- */
+.main-genericButton-button,
+.main-playButton-PlayButton {
+  color: var(--spice-button);
+}
+
+/* ---------- typographie type iTunes ---------- */
+body,
+.main-type-album,
+.main-type-header {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif !important;
+}
+
+/* ---------- nav latérale compacte ---------- */
+.Root__nav-bar {
+  background: var(--spice-sidebar);
+}
+
+/* ---------- remove clutter (désactivable ici) ---------- */
+.main-topBar-topbarContentWrapper > .main-topBar-historyButtons {
+  opacity: 1 !important;
+}
