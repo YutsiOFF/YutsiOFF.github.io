@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI Studio — Toutes tes IA gratuites, sur ton PC</title>
+<meta name="description" content="AI Studio réunit des IA gratuites, locales et Cloud, dans une application Windows : discussion, agents sur tes projets, génération d'images et de modèles 3D. Sans abonnement, sans compte pour les IA locales." />
+<meta property="og:title" content="AI Studio — Toutes tes IA gratuites, sur ton PC" />
+<meta property="og:description" content="IA locales sans clé ni compte, 15 fournisseurs Cloud gratuits, agents transparents, images et 3D. Application Windows open source." />
+<meta property="og:image" content="https://yutsioff.github.io/ai-studio/img/og.jpg" />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#0c0d10" />
+<link rel="icon" type="image/png" href="./img/favicon.png" />
+<style>
+@font-face { font-family: 'Inter'; font-weight: 100 900; font-display: swap; src: url(./fonts/inter-latin-wght-normal.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Inter'; font-weight: 100 900; font-display: swap; src: url(./fonts/inter-latin-ext-wght-normal.woff2) format('woff2'); unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 100 800; font-display: swap; src: url(./fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2'); }
+
+:root {
+  --bg: #0a0b0e; --bg2: #0f1014; --surface: #14161b; --surface2: #1a1d23; --line: #23262e; --line2: #2e323c;
+  --fg: #ececef; --muted: #a1a1aa; --subtle: #71717a;
+  --accent: #3ddc97; --accent2: #2fc585; --cloud: #5cb8ff; --warn: #f5b84c; --danger: #f87171;
+  --ease: cubic-bezier(.22,1,.36,1);
+  --radius: 18px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', system-ui, 'Segoe UI', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; font-feature-settings: 'cv11','ss01'; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+::selection { background: rgba(61,220,151,.3); }
+.wrap { width: min(1180px, 100% - 40px); margin-inline: auto; }
+.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+/* Barre de progression de défilement */
+#progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: linear-gradient(90deg, var(--accent), var(--cloud)); z-index: 100; }
+
+/* Navigation */
+nav { position: fixed; top: 0; inset-inline: 0; z-index: 50; transition: background .3s, border-color .3s, backdrop-filter .3s; border-bottom: 1px solid transparent; }
+nav.scrolled { background: rgba(10,11,14,.72); backdrop-filter: blur(14px) saturate(140%); border-color: var(--line); }
+nav .wrap { display: flex; align-items: center; gap: 28px; height: 68px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -.01em; }
+.brand img { width: 28px; height: 28px; border-radius: 7px; }
+nav .links { display: flex; gap: 24px; margin-left: 12px; font-size: 14px; color: var(--muted); }
+nav .links a:hover { color: var(--fg); }
+nav .spacer { flex: 1; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 44px; padding: 0 20px; border-radius: 12px; font-weight: 600; font-size: 15px; transition: transform .2s var(--ease), background .2s, box-shadow .3s; white-space: nowrap; cursor: pointer; border: 0; }
+.btn svg { width: 18px; height: 18px; }
+.btn-primary { background: var(--accent); color: #05140d; box-shadow: 0 0 0 1px rgba(61,220,151,.4), 0 10px 40px -10px rgba(61,220,151,.55); }
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(61,220,151,.6), 0 14px 50px -10px rgba(61,220,151,.75); }
+.btn-ghost { background: rgba(255,255,255,.04); color: var(--fg); border: 1px solid var(--line2); }
+.btn-ghost:hover { background: rgba(255,255,255,.08); }
+.btn-sm { height: 38px; padding: 0 16px; font-size: 14px; border-radius: 10px; }
+.btn-lg { height: 56px; padding: 0 28px; font-size: 16.5px; border-radius: 14px; }
+
+/* Hero */
+.hero { position: relative; padding: 150px 0 40px; overflow: hidden; }
+#net { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .9; }
+.hero::after { content: ''; position: absolute; inset: auto 0 0 0; height: 240px; background: linear-gradient(to bottom, transparent, var(--bg)); pointer-events: none; }
+.glow { position: absolute; width: 900px; height: 600px; left: 50%; top: -120px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(61,220,151,.16), transparent 70%); filter: blur(10px); pointer-events: none; }
+.hero-inner { position: relative; z-index: 2; text-align: center; }
+.pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border-radius: 999px; border: 1px solid var(--line2); background: rgba(20,22,27,.7); backdrop-filter: blur(8px); font-size: 13px; color: var(--muted); }
+.pill b { background: rgba(61,220,151,.14); color: var(--accent); padding: 2px 8px; border-radius: 999px; font-weight: 600; font-size: 12px; }
+h1 { font-size: clamp(42px, 7.2vw, 84px); line-height: 1.02; letter-spacing: -.045em; font-weight: 750; margin: 26px auto 22px; max-width: 980px; }
+h1 .grad { background: linear-gradient(100deg, var(--accent) 0%, #8ff0c6 35%, var(--cloud) 75%); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% 100%; animation: sheen 8s ease-in-out infinite alternate; }
+@keyframes sheen { to { background-position: 100% 0; } }
+.lead { font-size: clamp(17px, 2vw, 20px); color: var(--muted); max-width: 680px; margin: 0 auto; }
+.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 38px; }
+.dl-meta { margin-top: 14px; font-size: 13px; color: var(--subtle); }
+.dl-meta span + span::before { content: '·'; margin: 0 8px; }
+.word { display: inline-block; opacity: 0; transform: translateY(24px); filter: blur(8px); animation: word .9s var(--ease) forwards; }
+@keyframes word { to { opacity: 1; transform: none; filter: none; } }
+.word.grad { animation: word .9s var(--ease) forwards, sheen 8s ease-in-out infinite alternate; }
+
+/* Fenêtre de l'application */
+.stage { perspective: 1800px; margin-top: 70px; position: relative; z-index: 2; }
+.window { border-radius: 16px; border: 1px solid var(--line2); background: var(--bg2); overflow: hidden; box-shadow: 0 50px 120px -30px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.03), 0 0 120px -40px rgba(61,220,151,.35); transform-origin: 50% 0; transition: transform .1s linear; will-change: transform; }
+.window-bar { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border-bottom: 1px solid var(--line); background: #0d0e12; font-size: 12px; color: var(--subtle); }
+.window-bar i { width: 11px; height: 11px; border-radius: 50%; background: #2a2d35; }
+.window-bar span { margin-left: 10px; }
+
+/* Bandeau de chiffres */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 90px; }
+.stat { background: var(--bg2); padding: 28px 24px; }
+.stat .n { font-size: 40px; font-weight: 700; letter-spacing: -.03em; line-height: 1; }
+.stat .n small { font-size: 22px; color: var(--muted); font-weight: 600; }
+.stat .l { margin-top: 10px; color: var(--muted); font-size: 14px; }
+
+/* Sections */
+section { padding: 120px 0 0; position: relative; }
+.eyebrow { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
+h2 { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.07; letter-spacing: -.035em; font-weight: 720; margin: 14px 0 16px; max-width: 760px; }
+.sub { color: var(--muted); font-size: 18px; max-width: 640px; margin: 0; }
+
+/* Grille de fonctionnalités */
+.bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-top: 54px; }
+.card { position: relative; border-radius: var(--radius); border: 1px solid var(--line); background: linear-gradient(180deg, var(--surface), var(--bg2)); padding: 28px; overflow: hidden; isolation: isolate; }
+.card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(420px circle at var(--mx, -100px) var(--my, -100px), rgba(61,220,151,.10), transparent 40%); opacity: 0; transition: opacity .3s; z-index: -1; }
+.card:hover::before { opacity: 1; }
+.card h3 { margin: 18px 0 8px; font-size: 20px; letter-spacing: -.015em; font-weight: 650; }
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+.icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgba(61,220,151,.1); border: 1px solid rgba(61,220,151,.22); color: var(--accent); }
+.icon.cloud { background: rgba(92,184,255,.1); border-color: rgba(92,184,255,.25); color: var(--cloud); }
+.icon svg { width: 22px; height: 22px; }
+.c3 { grid-column: span 3; } .c2 { grid-column: span 2; } .c4 { grid-column: span 4; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+.tag { font-size: 12px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line2); color: var(--muted); background: rgba(255,255,255,.02); }
+.tag.l { color: var(--accent); border-color: rgba(61,220,151,.3); }
+.tag.c { color: var(--cloud); border-color: rgba(92,184,255,.3); }
+
+/* Timeline animée de l'agent */
+.steps { margin-top: 20px; display: grid; gap: 8px; }
+.step { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--subtle); transition: color .4s; }
+.step .dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px dashed var(--line2); display: grid; place-items: center; flex-shrink: 0; transition: all .4s var(--ease); }
+.step.run { color: var(--fg); }
+.step.run .dot { border: 2px solid rgba(61,220,151,.25); border-top-color: var(--accent); animation: spin .8s linear infinite; }
+.step.done { color: var(--muted); }
+.step.done .dot { border: 0; background: var(--accent); transform: scale(1); }
+.step.done .dot::after { content: ''; width: 8px; height: 4px; border-left: 2px solid #05140d; border-bottom: 2px solid #05140d; transform: rotate(-45deg) translate(1px,-1px); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Diff miniature */
+.diff { margin-top: 18px; border-radius: 12px; border: 1px solid var(--line); background: #0b0c0f; font-size: 12.5px; overflow: hidden; }
+.diff div { padding: 2px 14px; white-space: pre; }
+.diff .add { background: rgba(61,220,151,.09); color: #9ff0c9; }
+.diff .ctx { color: var(--subtle); }
+.diff .head { display: flex; justify-content: space-between; padding: 8px 14px; border-bottom: 1px solid var(--line); color: var(--muted); font-family: 'Inter'; font-size: 12px; }
+.approve { display: flex; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--line); font-family: 'Inter'; }
+.approve span { font-size: 12px; padding: 5px 12px; border-radius: 8px; }
+.approve .ok { background: var(--accent); color: #05140d; font-weight: 600; }
+.approve .no { border: 1px solid var(--line2); color: var(--muted); }
+
+/* Démo segmentation */
+.seg { margin-top: 18px; height: 170px; border-radius: 12px; border: 1px solid var(--line); background: radial-gradient(ellipse at center, #181b21, #0b0c0f 75%); position: relative; overflow: hidden; }
+.seg canvas { width: 100%; height: 100%; }
+
+/* Galerie */
+.tabs { display: inline-flex; gap: 4px; padding: 4px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg2); margin-top: 40px; flex-wrap: wrap; }
+.tabs button { position: relative; height: 40px; padding: 0 18px; border-radius: 10px; border: 0; background: transparent; color: var(--muted); font: 500 14px 'Inter'; cursor: pointer; transition: color .2s, background .25s; }
+.tabs button.on { color: var(--fg); background: var(--surface2); }
+.gallery { margin-top: 22px; display: grid; }
+.gallery figure { grid-area: 1 / 1; margin: 0; pointer-events: none; opacity: 0; transform: scale(.985); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.gallery figure.on { opacity: 1; transform: none; pointer-events: auto; }
+.gallery figcaption { margin-top: 16px; color: var(--muted); font-size: 15px; text-align: center; }
+.gallery .window { transform: none !important; }
+
+/* Profils de PC */
+.profiles { display: grid; grid-template-columns: 300px 1fr; gap: 20px; margin-top: 54px; }
+.plist { display: grid; gap: 8px; align-content: start; }
+.plist button { text-align: left; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg2); color: var(--muted); font: 500 14.5px 'Inter'; cursor: pointer; transition: all .25s var(--ease); }
+.plist button small { display: block; font-size: 12.5px; color: var(--subtle); margin-top: 2px; font-weight: 400; }
+.plist button:hover { border-color: var(--line2); color: var(--fg); }
+.plist button.on { border-color: rgba(61,220,151,.45); background: linear-gradient(180deg, rgba(61,220,151,.08), var(--bg2)); color: var(--fg); }
+.pdetail { border-radius: var(--radius); border: 1px solid var(--line); background: var(--bg2); padding: 28px; }
+.phead { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.phead h3 { margin: 0; font-size: 22px; letter-spacing: -.02em; flex: 1; }
+.badge { font-size: 11.5px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; padding: 4px 9px; border-radius: 7px; background: rgba(255,255,255,.06); color: var(--muted); }
+.badge.g { background: rgba(61,220,151,.13); color: var(--accent); }
+.badge.b { background: rgba(92,184,255,.13); color: var(--cloud); }
+.badge.y { background: rgba(245,184,76,.13); color: var(--warn); }
+.recs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 22px; }
+.rec { border-radius: 14px; border: 1px solid var(--line); padding: 16px; background: var(--surface); transition: transform .4s var(--ease), opacity .4s; }
+.rec .u { font-size: 11.5px; text-transform: uppercase; letter-spacing: .1em; color: var(--subtle); font-weight: 600; }
+.rec .m { font-size: 16px; font-weight: 650; margin: 6px 0 8px; letter-spacing: -.01em; }
+.rec .s { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+.pnote { margin-top: 18px; font-size: 13.5px; color: var(--subtle); }
+.swap { animation: swap .5s var(--ease); }
+@keyframes swap { from { opacity: 0; transform: translateY(8px); } }
+
+/* Étapes d'installation */
+.how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 54px; counter-reset: s; }
+.how .card { padding-top: 70px; }
+.how .card::after { counter-increment: s; content: '0' counter(s); position: absolute; top: 22px; left: 28px; font: 600 14px 'JetBrains Mono'; color: var(--accent); }
+
+/* Limites */
+.limits { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 40px; }
+.limit { display: flex; gap: 14px; padding: 18px 20px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg2); }
+.limit svg { width: 20px; height: 20px; color: var(--warn); flex-shrink: 0; margin-top: 2px; }
+.limit b { display: block; font-weight: 600; font-size: 15px; }
+.limit span { color: var(--muted); font-size: 14px; }
+
+/* FAQ */
+.faq { margin-top: 40px; display: grid; gap: 10px; max-width: 860px; }
+details { border: 1px solid var(--line); border-radius: 14px; background: var(--bg2); padding: 0 22px; transition: border-color .2s; }
+details[open] { border-color: var(--line2); }
+summary { cursor: pointer; list-style: none; padding: 20px 0; font-weight: 600; font-size: 16.5px; display: flex; justify-content: space-between; gap: 16px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: '+'; color: var(--subtle); font-weight: 400; font-size: 22px; line-height: 1; transition: transform .3s var(--ease); }
+details[open] summary::after { transform: rotate(45deg); }
+details p { margin: 0 0 20px; color: var(--muted); font-size: 15px; }
+
+/* Appel final */
+.final { margin: 130px 0 0; border-radius: 28px; border: 1px solid var(--line2); padding: 80px 30px; text-align: center; position: relative; overflow: hidden; background: radial-gradient(ellipse at top, rgba(61,220,151,.14), transparent 60%), var(--bg2); }
+.final h2 { margin-inline: auto; }
+.final .sub { margin-inline: auto; }
+footer { padding: 60px 0 50px; color: var(--subtle); font-size: 13.5px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 28px; }
+footer a:hover { color: var(--fg); }
+
+/* Apparition au défilement */
+.reveal { opacity: 0; transform: translateY(28px); filter: blur(6px); transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); transition-delay: var(--d, 0s); }
+.reveal.in { opacity: 1; transform: none; filter: none; }
+
+@media (max-width: 960px) {
+  nav .links { display: none; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .bento { grid-template-columns: 1fr; }
+  .c2, .c3, .c4 { grid-column: auto; }
+  .profiles { grid-template-columns: 1fr; }
+  .recs { grid-template-columns: 1fr; }
+  .how, .limits { grid-template-columns: 1fr; }
+  .agent-demo { grid-template-columns: 1fr !important; }
+  .stage { margin-top: 44px; }
+  .hero { padding-top: 120px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .reveal, .word { opacity: 1; transform: none; filter: none; }
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav id="nav">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="./img/icon.png" alt="" />AI Studio</a>
+    <div class="links">
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#apercu">Aperçu</a>
+      <a href="#ton-pc">Ton PC</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/YutsiOFF/ai-studio" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="spacer"></div>
+    <a class="btn btn-primary btn-sm dl-link" href="https://github.com/YutsiOFF/ai-studio/releases/latest">Télécharger</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <canvas id="net" aria-hidden="true"></canvas>
+  <div class="glow"></div>
+  <div class="wrap hero-inner">
+    <span class="pill"><b class="ver-badge">Nouveau</b> Application Windows · open source · gratuite</span>
+    <h1 id="title"><span class="grad">Toutes tes IA gratuites,</span> réunies sur ton PC.</h1>
+    <p class="lead reveal" style="--d:.35s">Discute, fais travailler des agents sur tes projets, génère des images et des modèles 3D. Les IA locales fonctionnent <strong style="color:var(--fg)">sans clé, sans compte et hors ligne</strong>, et AI Studio choisit celles que ton PC peut vraiment faire tourner.</p>
+    <div class="cta reveal" style="--d:.5s">
+      <a class="btn btn-primary btn-lg dl-link" href="https://github.com/YutsiOFF/ai-studio/releases/latest">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>
+        Télécharger pour Windows
+      </a>
+      <a class="btn btn-ghost btn-lg" href="https://github.com/YutsiOFF/ai-studio" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+        Code source
+      </a>
+    </div>
+    <div class="dl-meta reveal" style="--d:.6s"><span class="dl-version">Dernière version</span><span class="dl-size">Windows 10 / 11 · 64 bits</span><span>Licence MIT</span></div>
+
+    <div class="stage reveal" style="--d:.7s">
+      <div class="window" id="heroWindow">
+        <div class="window-bar"><i></i><i></i><i></i><span>AI Studio — Agent sur « Mon jeu »</span></div>
+        <img src="./img/agent.webp" width="1400" height="860" alt="Un agent d'AI Studio modifie un fichier du projet : étapes réelles, chronologie et fichier modifié avec diff." />
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat reveal"><div class="n" data-count="17">0</div><div class="l">modèles locaux au catalogue</div></div>
+      <div class="stat reveal" style="--d:.08s"><div class="n" data-count="15">0</div><div class="l">fournisseurs Cloud gratuits</div></div>
+      <div class="stat reveal" style="--d:.16s"><div class="n"><span data-count="0">0</span><small> €</small></div><div class="l">d'abonnement, jamais</div></div>
+      <div class="stat reveal" style="--d:.24s"><div class="n"><span data-count="100">0</span><small> %</small></div><div class="l">local possible, hors ligne</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="fonctionnalites">
+  <div class="wrap">
+    <div class="eyebrow reveal">Fonctionnalités</div>
+    <h2 class="reveal">Un seul logiciel au lieu de dix sites et abonnements.</h2>
+    <p class="sub reveal">Chaque bouton est relié à un vrai moteur. Ce qui n'est pas encore disponible est clairement indiqué.</p>
+
+    <div class="bento">
+      <article class="card c3 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+        <h3>IA locales, sans clé ni compte</h3>
+        <p>AI Studio installe et pilote lui-même le moteur local. Tu choisis un modèle, tu cliques sur « Installer » : il fonctionne ensuite hors ligne, sans rien envoyer.</p>
+        <div class="tags"><span class="tag l">Qwen3</span><span class="tag l">Qwen3-Coder</span><span class="tag l">gpt-oss</span><span class="tag l">Gemma 3</span><span class="tag l">Mistral Small</span><span class="tag l">Devstral</span><span class="tag l">DeepSeek-R1</span></div>
+      </article>
+      <article class="card c3 reveal" style="--d:.08s">
+        <div class="icon cloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H7a5 5 0 1 1 1.6-9.74A6 6 0 0 1 20 11.5a3.75 3.75 0 0 1-2.5 7.5Z"/></svg></div>
+        <h3>Le meilleur du Cloud gratuit</h3>
+        <p>15 fournisseurs réellement gratuits, un sélecteur unique, et des quotas affichés honnêtement. Les offres d'essai sont rangées à part, jamais présentées comme gratuites.</p>
+        <div class="tags"><span class="tag c">OVHcloud (sans clé)</span><span class="tag c">Gemini</span><span class="tag c">Groq</span><span class="tag c">Cerebras</span><span class="tag c">OpenRouter</span><span class="tag c">Mistral</span><span class="tag c">NVIDIA NIM</span><span class="tag c">+8</span></div>
+      </article>
+
+      <article class="card c4 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M9 13h.01M15 13h.01M9 17h6"/></svg></div>
+        <h3>Des agents qui travaillent dans tes projets, sous ton contrôle</h3>
+        <p>Tu choisis un dossier ; l'agent explore, lit, modifie et lance des commandes. Tu vois chaque étape en direct, et chaque modification t'est montrée avant d'être appliquée.</p>
+        <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:16px" class="agent-demo">
+          <div class="steps" id="steps"></div>
+          <div class="diff mono">
+            <div class="head"><span>src/Player.ts</span><span style="color:var(--accent)">+3</span></div>
+            <div class="ctx">  speed = 5</div>
+            <div class="add">+ jumpHeight = 2.5</div>
+            <div class="add">+ jump(): void { … }</div>
+            <div class="ctx">}</div>
+            <div class="approve"><span class="ok">Autoriser</span><span class="no">Refuser</span></div>
+          </div>
+        </div>
+      </article>
+      <article class="card c2 reveal" style="--d:.08s">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Sécurité par défaut</h3>
+        <p>L'agent ne sort jamais du dossier du projet. Les fichiers secrets sont protégés, les suppressions vont dans la Corbeille, toute modification peut être annulée, et un bouton arrête tout instantanément.</p>
+      </article>
+
+      <article class="card c2 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L6 21"/></svg></div>
+        <h3>Génération d'images</h3>
+        <p>Z-Image Turbo, SDXL ou SD 1.5 en local, accélérés par ta carte NVIDIA, AMD ou Intel. Image de référence, variantes, formats et historique.</p>
+      </article>
+      <article class="card c4 reveal" style="--d:.08s">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m12 12 8-4.5M12 12v9M12 12 4 7.5"/></svg></div>
+        <h3>Image ou texte → modèle 3D, découpé en parties</h3>
+        <p>TRELLIS génère un modèle texturé via le Cloud gratuit, sur n'importe quel PC. Puis découpe-le en pièces, masque, renomme, supprime ou exporte chaque partie en GLB, OBJ ou STL.</p>
+        <div class="seg"><canvas id="seg" aria-hidden="true"></canvas></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="apercu">
+  <div class="wrap">
+    <div class="eyebrow reveal">Aperçu</div>
+    <h2 class="reveal">Pensé comme un logiciel professionnel.</h2>
+    <p class="sub reveal">Interface sombre, précise et calme. Captures réelles de l'application.</p>
+    <div class="tabs reveal" role="tablist">
+      <button class="on" data-i="0">Agent</button>
+      <button data-i="1">Bibliothèque</button>
+      <button data-i="2">3D et segmentation</button>
+      <button data-i="3">Cloud gratuit</button>
+    </div>
+    <div class="gallery reveal">
+      <figure class="on"><div class="window"><div class="window-bar"><i></i><i></i><i></i></div><img src="./img/agent.webp" loading="lazy" width="1400" height="860" alt="Assistant en mode agent" /></div><figcaption>Chaque action de l'agent, en temps réel : étapes, chronologie, fichiers modifiés et diff.</figcaption></figure>
+      <figure><div class="window"><div class="window-bar"><i></i><i></i><i></i></div><img src="./img/library.webp" loading="lazy" width="1400" height="860" alt="Bibliothèque de modèles" /></div><figcaption>Chaque modèle est classé Rapide, Hybride, Lent ou Trop lourd pour ton PC, avec un pack recommandé.</figcaption></figure>
+      <figure><div class="window" style="max-width:816px;margin-inline:auto"><div class="window-bar"><i></i><i></i><i></i></div><img src="./img/3d.webp" loading="lazy" width="816" height="738" alt="Visualiseur 3D et segmentation" style="margin-inline:auto" /></div><figcaption>Visualiseur 3D interactif : pièces séparées, couleurs par partie, export de chaque pièce.</figcaption></figure>
+      <figure><div class="window"><div class="window-bar"><i></i><i></i><i></i></div><img src="./img/cloud.webp" loading="lazy" width="1400" height="860" alt="Fournisseurs Cloud gratuits" /></div><figcaption>Fournisseurs Cloud gratuits, limites connues, hébergement et usage des données affichés pour chacun.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="ton-pc">
+  <div class="wrap">
+    <div class="eyebrow reveal">S'adapte à ton PC</div>
+    <h2 class="reveal">Les bons modèles, pour ta machine.</h2>
+    <p class="sub reveal">Au premier lancement, AI Studio analyse ta carte graphique, sa mémoire et ta RAM, puis calcule ce qui tournera vite, en mode hybride, lentement ou pas du tout. Ci-dessous, les recommandations réelles de l'application pour quelques configurations.</p>
+    <div class="profiles reveal">
+      <div class="plist" id="plist"></div>
+      <div class="pdetail" id="pdetail"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow reveal">Démarrer</div>
+    <h2 class="reveal">Trois minutes pour commencer.</h2>
+    <div class="how">
+      <div class="card reveal"><h3>Installe AI Studio</h3><p>Télécharge l'installateur et lance-le. Aucun droit administrateur requis. Les mises à jour s'installent ensuite toutes seules.</p></div>
+      <div class="card reveal" style="--d:.08s"><h3>Laisse-le analyser ton PC</h3><p>Carte graphique, mémoire vidéo, RAM : AI Studio choisit l'accélération (CUDA, Vulkan ou processeur) et prépare un pack de modèles adapté.</p></div>
+      <div class="card reveal" style="--d:.16s"><h3>Installe, lance, crée</h3><p>Un clic pour installer le pack recommandé. Discute, lance un agent sur un projet, génère des images ou des modèles 3D.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow reveal" style="color:var(--warn)">En toute transparence</div>
+    <h2 class="reveal">Ce qui n'est pas encore là.</h2>
+    <p class="sub reveal">Pas de fonctionnalité simulée : voici les limites actuelles, également affichées dans l'application.</p>
+    <div class="limits">
+      <div class="limit reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg><div><b>3D 100 % locale</b><span>Pas encore intégrée : les générateurs 3D locaux exigent une compilation CUDA sous Windows. La 3D passe par le Cloud gratuit (~2 min de GPU par jour, 5 min avec un compte Hugging Face gratuit).</span></div></div>
+      <div class="limit reveal" style="--d:.06s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg><div><b>Nommage automatique des parties</b><span>Le découpage 3D est géométrique. L'outil qui nomme les parties (lame, garde…) a une licence exclue de l'Union européenne.</span></div></div>
+      <div class="limit reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg><div><b>Export FBX et retouche d'image partielle</b><span>Nécessitent Blender et ComfyUI : pas encore intégrés. GLB, OBJ et STL sont disponibles.</span></div></div>
+      <div class="limit reveal" style="--d:.06s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg><div><b>Windows uniquement, en français</b><span>macOS, Linux et l'anglais ne sont pas encore pris en charge.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="eyebrow reveal">Questions</div>
+    <h2 class="reveal">Questions fréquentes.</h2>
+    <div class="faq">
+      <details class="reveal"><summary>C'est vraiment gratuit ?</summary><p>Oui. AI Studio est open source (MIT). Les IA locales tournent sur ton PC sans abonnement ni crédit. Les fournisseurs Cloud proposés ont une offre gratuite permanente ; leurs quotas sont affichés, et les offres d'essai sont séparées et clairement indiquées.</p></details>
+      <details class="reveal"><summary>Windows affiche « Windows a protégé votre ordinateur ». Que faire ?</summary><p>L'installateur n'est pas signé numériquement (une signature est payante). Clique sur « Informations complémentaires » puis « Exécuter quand même ». Le code source et les compilations sont publics sur GitHub.</p></details>
+      <details class="reveal"><summary>Faut-il une carte graphique ?</summary><p>Non. Sans carte dédiée, les petits modèles tournent sur le processeur et le Cloud gratuit est proposé pour le reste. Avec une carte NVIDIA, AMD ou Intel Arc, AI Studio utilise automatiquement l'accélération adaptée.</p></details>
+      <details class="reveal"><summary>Mes données sont-elles envoyées quelque part ?</summary><p>Avec un modèle local, rien ne quitte ton PC. Avec un modèle Cloud, tes messages sont envoyés au fournisseur choisi, et AI Studio indique pour chacun son pays d'hébergement et s'il peut utiliser tes données. Tes clés sont chiffrées par Windows.</p></details>
+      <details class="reveal"><summary>Quelle configuration minimale ?</summary><p>Windows 10 (22H2) ou 11 en 64 bits et 8 Go de RAM. Prévois de l'espace disque pour les modèles : de 0,5 Go à plus de 20 Go chacun, selon ceux que tu choisis.</p></details>
+      <details class="reveal"><summary>L'IA peut-elle abîmer mes fichiers ?</summary><p>Chaque modification et chaque commande te sont montrées avant d'être appliquées. Les suppressions vont dans la Corbeille, chaque modification peut être annulée, et les commandes dangereuses sont bloquées.</p></details>
+    </div>
+
+    <div class="final reveal">
+      <h2>Prêt à essayer ?</h2>
+      <p class="sub">Gratuit, open source, et ça s'adapte à ton PC.</p>
+      <div class="cta"><a class="btn btn-primary btn-lg dl-link" href="https://github.com/YutsiOFF/ai-studio/releases/latest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>Télécharger pour Windows</a></div>
+      <div class="dl-meta"><span class="dl-version">Dernière version</span><span class="dl-size">Windows 10 / 11</span></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 YutsiOFF · AI Studio est distribué sous licence MIT. Les modèles d'IA ont leurs propres licences, affichées dans l'application.</span>
+    <span><a href="https://github.com/YutsiOFF/ai-studio" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/YutsiOFF/ai-studio/releases" target="_blank" rel="noopener">Versions</a> · <a href="https://github.com/YutsiOFF/ai-studio/issues" target="_blank" rel="noopener">Signaler un problème</a></span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  // --- Titre : apparition mot par mot ---
+  const title = document.getElementById('title')
+  let k = 0
+  for (const node of [...title.childNodes]) {
+    const wrapWords = (text, cls) => text.split(/(\s+)/).map(w => {
+      if (!w.trim()) return document.createTextNode(w)
+      const s = document.createElement('span'); s.className = 'word' + (cls ? ' ' + cls : ''); s.textContent = w; s.style.animationDelay = (0.06 * k++) + 's'; return s
+    })
+    if (node.nodeType === 3) node.replaceWith(...wrapWords(node.textContent))
+    else { const parts = wrapWords(node.textContent, node.className); node.replaceWith(...parts) }
+  }
+
+  // --- Navigation et progression ---
+  const nav = document.getElementById('nav'), bar = document.getElementById('progress'), win = document.getElementById('heroWindow')
+  const onScroll = () => {
+    const y = scrollY, h = document.documentElement.scrollHeight - innerHeight
+    nav.classList.toggle('scrolled', y > 10)
+    bar.style.width = (h > 0 ? (y / h) * 100 : 0) + '%'
+    if (!reduce && win) {
+      const t = Math.min(1, y / 500)
+      win.style.transform = `rotateX(${(1 - t) * 14}deg) scale(${0.94 + t * 0.06}) translateY(${(1 - t) * 10}px)`
+    }
+  }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll()
+
+  // --- Apparitions au défilement ---
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }), { threshold: .12, rootMargin: '0px 0px -40px 0px' })
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el))
+
+  // --- Compteurs ---
+  const cio = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return
+    cio.unobserve(e.target)
+    const el = e.target, end = +el.dataset.count, t0 = performance.now(), dur = reduce ? 1 : 1400
+    const step = now => { const p = Math.min(1, (now - t0) / dur), v = Math.round(end * (1 - Math.pow(1 - p, 3))); el.textContent = v; if (p < 1) requestAnimationFrame(step) }
+    requestAnimationFrame(step)
+  }), { threshold: .5 })
+  document.querySelectorAll('[data-count]').forEach(el => cio.observe(el))
+
+  // --- Halo qui suit la souris sur les cartes ---
+  document.querySelectorAll('.card').forEach(c => c.addEventListener('pointermove', e => {
+    const r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px')
+  }))
+
+  // --- Réseau 3D animé du héros (cube icosaédrique + particules) ---
+  const cv = document.getElementById('net'), ctx = cv.getContext('2d')
+  let W, H, dpr, mouse = { x: 0, y: 0 }
+  const resize = () => { dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0) }
+  addEventListener('resize', resize); resize()
+  addEventListener('pointermove', e => { mouse.x = e.clientX / innerWidth - .5; mouse.y = e.clientY / innerHeight - .5 })
+  const phi = (1 + Math.sqrt(5)) / 2
+  const V = [[-1,phi,0],[1,phi,0],[-1,-phi,0],[1,-phi,0],[0,-1,phi],[0,1,phi],[0,-1,-phi],[0,1,-phi],[phi,0,-1],[phi,0,1],[-phi,0,-1],[-phi,0,1]].map(v => { const l = Math.hypot(...v); return v.map(x => x / l) })
+  const E = []; for (let i = 0; i < V.length; i++) for (let j = i + 1; j < V.length; j++) { const d = Math.hypot(V[i][0]-V[j][0], V[i][1]-V[j][1], V[i][2]-V[j][2]); if (d < 1.1) E.push([i, j]) }
+  const P = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), z: Math.random(), s: .2 + Math.random() * .8 }))
+  let t = 0
+  const rot = (v, ax, ay) => { let [x, y, z] = v; let c = Math.cos(ay), s = Math.sin(ay); [x, z] = [x * c + z * s, -x * s + z * c]; c = Math.cos(ax); s = Math.sin(ax); [y, z] = [y * c - z * s, y * s + z * c]; return [x, y, z] }
+  const draw = () => {
+    ctx.clearRect(0, 0, W, H)
+    // Particules
+    for (const p of P) { p.y -= .0004 * p.s; if (p.y < 0) p.y = 1; const x = (p.x + mouse.x * .02 * p.z) * W, y = (p.y + mouse.y * .02 * p.z) * H; ctx.fillStyle = `rgba(160,240,205,${.12 + p.z * .25})`; ctx.beginPath(); ctx.arc(x, y, .6 + p.z * 1.4, 0, 7); ctx.fill() }
+    // Forme centrale
+    const R = Math.min(W, H) * .24, cx = W / 2 + mouse.x * 30, cy = H * .36 + mouse.y * 20
+    const ay = t * .25 + mouse.x * .6, ax = .5 + Math.sin(t * .2) * .2 + mouse.y * .4
+    const pts = V.map(v => { const [x, y, z] = rot(v, ax, ay); const f = 3 / (3.4 - z); return { x: cx + x * R * f, y: cy + y * R * f, z } })
+    for (const [a, b] of E) { const za = (pts[a].z + pts[b].z) / 2; ctx.strokeStyle = `rgba(61,220,151,${.035 + (za + 1) * .07})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pts[a].x, pts[a].y); ctx.lineTo(pts[b].x, pts[b].y); ctx.stroke() }
+    for (const p of pts) { const a = .12 + (p.z + 1) * .22; ctx.fillStyle = `rgba(61,220,151,${a})`; ctx.shadowColor = 'rgba(61,220,151,.9)'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(p.x, p.y, 2 + (p.z + 1) * 1.6, 0, 7); ctx.fill() }
+    ctx.shadowBlur = 0
+    t += 1 / 60
+    if (!reduce) requestAnimationFrame(draw)
+  }
+  draw()
+
+  // --- Démo de la timeline de l'agent (illustrative) ---
+  const STEPS = ['Analyse de la demande', 'Exploration du projet', 'Lecture de src/Player.ts', 'Modification de src/Player.ts', 'Vérification : npx tsc', 'Finalisation']
+  const stepsEl = document.getElementById('steps')
+  STEPS.forEach(s => { const d = document.createElement('div'); d.className = 'step'; d.innerHTML = '<span class="dot"></span>' + s; stepsEl.appendChild(d) })
+  const items = [...stepsEl.children]; let si = 0
+  const tick = () => { items.forEach((el, i) => el.className = 'step' + (i < si ? ' done' : i === si ? ' run' : '')); si = si > items.length ? 0 : si + 1; setTimeout(tick, si === 0 ? 1600 : 900) }
+  const sio = new IntersectionObserver(es => { if (es[0].isIntersecting) { sio.disconnect(); tick() } }); sio.observe(stepsEl)
+
+  // --- Démo de segmentation : une épée qui se sépare en 4 pièces ---
+  const sc = document.getElementById('seg'), sx = sc.getContext('2d')
+  const sres = () => { const r = devicePixelRatio || 1; sc.width = sc.clientWidth * r; sc.height = sc.clientHeight * r; sx.setTransform(r, 0, 0, r, 0, 0) }
+  addEventListener('resize', sres); sres()
+  const parts = [ { c: '#3ddc97', r: [-6, -64, 12, 96], d: -1 }, { c: '#5cb8ff', r: [-36, 30, 72, 9], d: 0 }, { c: '#f5b84c', r: [-5, 39, 10, 30], d: 1 }, { c: '#f87171', r: [-9, 69, 18, 12], d: 2 } ]
+  let st = 0
+  const segDraw = () => {
+    const w = sc.clientWidth, h = sc.clientHeight; sx.clearRect(0, 0, w, h)
+    const phase = (Math.sin(st) + 1) / 2, sep = Math.max(0, phase - .15) * 1.2
+    sx.save(); sx.translate(w / 2, h / 2 - 10); sx.rotate(Math.PI / 2.2); sx.scale(.95, .95)
+    for (const p of parts) { const off = p.d * 14 * sep; sx.fillStyle = phase > .2 ? p.c : '#c8ccd4'; sx.globalAlpha = .92; sx.shadowColor = phase > .2 ? p.c : 'transparent'; sx.shadowBlur = phase > .2 ? 14 : 0; sx.beginPath(); sx.roundRect(p.r[0], p.r[1] + off, p.r[2], p.r[3], 3); sx.fill() }
+    sx.restore()
+    sx.font = '500 11px Inter'; sx.fillStyle = '#71717a'; sx.fillText(phase > .2 ? '4 pièces séparées' : '1 bloc', 14, h - 14)
+    st += reduce ? 0 : .02; requestAnimationFrame(segDraw)
+  }
+  segDraw()
+
+  // --- Galerie ---
+  const tabs = document.querySelectorAll('.tabs button'), figs = document.querySelectorAll('.gallery figure')
+  let gi = 0, auto
+  const show = i => { gi = i; tabs.forEach((b, k) => b.classList.toggle('on', k === i)); figs.forEach((f, k) => f.classList.toggle('on', k === i)) }
+  tabs.forEach(b => b.addEventListener('click', () => { show(+b.dataset.i); clearInterval(auto) }))
+  auto = setInterval(() => show((gi + 1) % figs.length), 6000)
+
+  // --- Profils de PC (recommandations calculées par le moteur de l'application) ---
+  const FIT = { fast: ['Rapide', 'g'], hybrid: ['Hybride', 'b'], slow: ['Lent', 'y'] }
+  const USE = { chat: 'Discussion', code: 'Code / Agent', vision: 'Vision' }
+  const PROFILES = [{"id": "office", "label": "PC bureautique", "gpu": "Aucune carte dédiée", "ram": 8, "accel": "cpu", "recs": [{"use": "chat", "name": "Qwen3 4B", "fit": "slow", "tps": 9}, {"use": "code", "name": "Qwen3 4B", "fit": "slow", "tps": 9}, {"use": "vision", "name": null}, {"use": "docs", "name": "Qwen3 4B", "fit": "slow", "tps": 9}], "image": "Stable Diffusion 1.5"}, {"id": "gtx1060", "label": "GTX 1060 · 16 Go", "gpu": "GTX 1060 6GB", "ram": 16, "accel": "cuda", "recs": [{"use": "chat", "name": "Qwen3 4B", "fit": "fast", "tps": 42}, {"use": "code", "name": "Qwen3 4B", "fit": "fast", "tps": 42}, {"use": "vision", "name": "Gemma 3 4B", "fit": "fast", "tps": 32}, {"use": "docs", "name": "Qwen3 4B", "fit": "fast", "tps": 42}], "image": "Z-Image Turbo"}, {"id": "rtx3060ti", "label": "RTX 3060 Ti · 32 Go", "gpu": "RTX 3060 Ti", "ram": 32, "accel": "cuda", "recs": [{"use": "chat", "name": "Qwen3 8B", "fit": "fast", "tps": 47}, {"use": "code", "name": "Qwen3-Coder 30B-A3B", "fit": "hybrid", "tps": 15}, {"use": "vision", "name": "Gemma 3 4B", "fit": "fast", "tps": 75}, {"use": "docs", "name": "Qwen3 8B", "fit": "fast", "tps": 47}], "image": "Z-Image Turbo"}, {"id": "rx6700", "label": "RX 6700 XT · 32 Go", "gpu": "Radeon RX 6700 XT", "ram": 32, "accel": "vulkan", "recs": [{"use": "chat", "name": "Qwen3 14B", "fit": "fast", "tps": 23}, {"use": "code", "name": "Qwen3 14B", "fit": "fast", "tps": 23}, {"use": "vision", "name": "Qwen3-VL 8B", "fit": "fast", "tps": 35}, {"use": "docs", "name": "Qwen3 14B", "fit": "fast", "tps": 23}], "image": "Z-Image Turbo"}, {"id": "rtx4090", "label": "RTX 4090 · 64 Go", "gpu": "RTX 4090", "ram": 64, "accel": "cuda", "recs": [{"use": "chat", "name": "Qwen3 30B-A3B", "fit": "fast", "tps": 270}, {"use": "code", "name": "Qwen3-Coder 30B-A3B", "fit": "fast", "tps": 270}, {"use": "vision", "name": "Gemma 3 27B", "fit": "fast", "tps": 33}, {"use": "docs", "name": "Qwen3 30B-A3B", "fit": "fast", "tps": 270}], "image": "Z-Image Turbo"}]
+  const plist = document.getElementById('plist'), pd = document.getElementById('pdetail')
+  const render = i => {
+    const p = PROFILES[i]
+    plist.querySelectorAll('button').forEach((b, k) => b.classList.toggle('on', k === i))
+    const accel = { cuda: 'CUDA', vulkan: 'Vulkan', cpu: 'Processeur' }[p.accel]
+    const recs = p.recs.filter(r => r.use !== 'docs').map(r => r.name
+      ? `<div class="rec"><div class="u">${USE[r.use]}</div><div class="m">${r.name}</div><span class="badge ${FIT[r.fit][1]}">${FIT[r.fit][0]}</span><div class="s">~${r.tps} tokens/s (estimé)</div></div>`
+      : `<div class="rec"><div class="u">${USE[r.use]}</div><div class="m" style="color:var(--muted)">Cloud gratuit</div><span class="badge b">Cloud</span><div class="s">Pas de modèle local adapté</div></div>`).join('')
+    pd.innerHTML = `<div class="swap"><div class="phead"><h3>${p.label}</h3><span class="badge g">${accel}</span><span class="badge">${p.gpu}</span></div>
+      <div class="recs">${recs}</div>
+      <div class="recs" style="grid-template-columns:1fr 1fr"><div class="rec"><div class="u">Images</div><div class="m">${p.image}</div><span class="badge g">Local</span></div><div class="rec"><div class="u">3D</div><div class="m">TRELLIS</div><span class="badge b">Cloud gratuit</span></div></div>
+      <p class="pnote">Vitesses estimées d'après la bande passante mémoire ; AI Studio les remplace par une mesure réelle après installation.</p></div>`
+  }
+  PROFILES.forEach((p, i) => { const b = document.createElement('button'); b.innerHTML = `${p.label}<small>${p.gpu} · ${p.ram} Go de RAM</small>`; b.onclick = () => render(i); plist.appendChild(b) })
+  render(2)
+
+  // --- Dernière version publiée (API publique GitHub) ---
+  fetch('https://api.github.com/repos/YutsiOFF/ai-studio/releases/latest').then(r => r.ok ? r.json() : null).then(rel => {
+    if (!rel) return
+    const exe = (rel.assets || []).find(a => /\.exe$/i.test(a.name))
+    if (exe) document.querySelectorAll('.dl-link').forEach(a => a.href = exe.browser_download_url)
+    document.querySelectorAll('.dl-version').forEach(e => e.textContent = 'Version ' + rel.tag_name.replace(/^v/, ''))
+    if (exe) document.querySelectorAll('.dl-size').forEach(e => e.textContent = (exe.size / 1048576).toFixed(0) + ' Mo · Windows 10 / 11')
+    document.querySelector('.ver-badge').textContent = rel.tag_name
+  }).catch(() => {})
+})()
+</script>
+</body>
+</html>
