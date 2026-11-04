@@ -264,8 +264,8 @@ footer a:hover { color: var(--fg); }
     </div>
 
     <div class="stats">
-      <div class="stat reveal"><div class="n" data-count="17">0</div><div class="l">modèles locaux au catalogue</div></div>
-      <div class="stat reveal" style="--d:.08s"><div class="n" data-count="15">0</div><div class="l">fournisseurs Cloud gratuits</div></div>
+      <div class="stat reveal"><div class="n" data-count="31">0</div><div class="l">modèles locaux au catalogue</div></div>
+      <div class="stat reveal" style="--d:.08s"><div class="n" data-count="5">0</div><div class="l">moteurs 3D gratuits, sans clé</div></div>
       <div class="stat reveal" style="--d:.16s"><div class="n"><span data-count="0">0</span><small> €</small></div><div class="l">d'abonnement, jamais</div></div>
       <div class="stat reveal" style="--d:.24s"><div class="n"><span data-count="100">0</span><small> %</small></div><div class="l">local possible, hors ligne</div></div>
     </div>
@@ -284,13 +284,13 @@ footer a:hover { color: var(--fg); }
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
         <h3>IA locales, sans clé ni compte</h3>
         <p>AI Studio installe et pilote lui-même le moteur local. Tu choisis un modèle, tu cliques sur « Installer » : il fonctionne ensuite hors ligne, sans rien envoyer.</p>
-        <div class="tags"><span class="tag l">Qwen3</span><span class="tag l">Qwen3-Coder</span><span class="tag l">gpt-oss</span><span class="tag l">Gemma 3</span><span class="tag l">Mistral Small</span><span class="tag l">Devstral</span><span class="tag l">DeepSeek-R1</span></div>
+        <div class="tags"><span class="tag l">Qwen3</span><span class="tag l">Qwen3-Coder</span><span class="tag l">gpt-oss</span><span class="tag l">Gemma 3</span><span class="tag l">Mistral Small</span><span class="tag l">Devstral</span><span class="tag l">DeepSeek-R1</span><span class="tag l">Phi-4</span><span class="tag l">Granite</span><span class="tag l">Llama 3.1</span><span class="tag l">+18</span></div>
       </article>
       <article class="card c3 reveal" style="--d:.08s">
         <div class="icon cloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H7a5 5 0 1 1 1.6-9.74A6 6 0 0 1 20 11.5a3.75 3.75 0 0 1-2.5 7.5Z"/></svg></div>
         <h3>Le meilleur du Cloud gratuit</h3>
-        <p>15 fournisseurs réellement gratuits, un sélecteur unique, et des quotas affichés honnêtement. Les offres d'essai sont rangées à part, jamais présentées comme gratuites.</p>
-        <div class="tags"><span class="tag c">OVHcloud (sans clé)</span><span class="tag c">Gemini</span><span class="tag c">Groq</span><span class="tag c">Cerebras</span><span class="tag c">OpenRouter</span><span class="tag c">Mistral</span><span class="tag c">NVIDIA NIM</span><span class="tag c">+8</span></div>
+        <p>17 fournisseurs réellement gratuits, dont 3 utilisables <strong style="color:var(--fg)">sans clé ni compte</strong>. Un sélecteur unique, des quotas affichés honnêtement, et les offres d'essai rangées à part.</p>
+        <div class="tags"><span class="tag c">OVHcloud (sans clé)</span><span class="tag c">Kilo Gateway (sans clé)</span><span class="tag c">LLM7 (sans clé)</span><span class="tag c">Gemini</span><span class="tag c">Groq</span><span class="tag c">Cerebras</span><span class="tag c">OpenRouter</span><span class="tag c">Mistral</span><span class="tag c">+9</span></div>
       </article>
 
       <article class="card c4 reveal">
@@ -323,7 +323,8 @@ footer a:hover { color: var(--fg); }
       <article class="card c4 reveal" style="--d:.08s">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m12 12 8-4.5M12 12v9M12 12 4 7.5"/></svg></div>
         <h3>Image ou texte → modèle 3D, découpé en parties</h3>
-        <p>TRELLIS génère un modèle texturé via le Cloud gratuit, sur n'importe quel PC. Puis découpe-le en pièces, masque, renomme, supprime ou exporte chaque partie en GLB, OBJ ou STL.</p>
+        <p>5 moteurs gratuits sans clé : TRELLIS, TRELLIS.2, PartCrafter (directement en parties), TripoSG et Step1X-3D. Pendant la génération, des milliers de particules prennent la forme du modèle. Découpe, masque, renomme ou exporte chaque partie en GLB, OBJ ou STL.</p>
+        <div class="tags"><span class="tag c">TRELLIS</span><span class="tag c">TRELLIS.2</span><span class="tag c">PartCrafter</span><span class="tag c">TripoSG</span><span class="tag c">Step1X-3D</span></div>
         <div class="seg"><canvas id="seg" aria-hidden="true"></canvas></div>
       </article>
     </div>
@@ -529,7 +530,7 @@ footer a:hover { color: var(--fg); }
   // --- Profils de PC (recommandations calculées par le moteur de l'application) ---
   const FIT = { fast: ['Rapide', 'g'], hybrid: ['Hybride', 'b'], slow: ['Lent', 'y'] }
   const USE = { chat: 'Discussion', code: 'Code / Agent', vision: 'Vision' }
-  const PROFILES = [{"id": "office", "label": "PC bureautique", "gpu": "Aucune carte dédiée", "ram": 8, "accel": "cpu", "recs": [{"use": "chat", "name": "Qwen3 4B", "fit": "slow", "tps": 9}, {"use": "code", "name": "Qwen3 4B", "fit": "slow", "tps": 9}, {"use": "vision", "name": null}, {"use": "docs", "name": "Qwen3 4B", "fit": "slow", "tps": 9}], "image": "Stable Diffusion 1.5"}, {"id": "gtx1060", "label": "GTX 1060 · 16 Go", "gpu": "GTX 1060 6GB", "ram": 16, "accel": "cuda", "recs": [{"use": "chat", "name": "Qwen3 4B", "fit": "fast", "tps": 42}, {"use": "code", "name": "Qwen3 4B", "fit": "fast", "tps": 42}, {"use": "vision", "name": "Gemma 3 4B", "fit": "fast", "tps": 32}, {"use": "docs", "name": "Qwen3 4B", "fit": "fast", "tps": 42}], "image": "Z-Image Turbo"}, {"id": "rtx3060ti", "label": "RTX 3060 Ti · 32 Go", "gpu": "RTX 3060 Ti", "ram": 32, "accel": "cuda", "recs": [{"use": "chat", "name": "Qwen3 8B", "fit": "fast", "tps": 47}, {"use": "code", "name": "Qwen3-Coder 30B-A3B", "fit": "hybrid", "tps": 15}, {"use": "vision", "name": "Gemma 3 4B", "fit": "fast", "tps": 75}, {"use": "docs", "name": "Qwen3 8B", "fit": "fast", "tps": 47}], "image": "Z-Image Turbo"}, {"id": "rx6700", "label": "RX 6700 XT · 32 Go", "gpu": "Radeon RX 6700 XT", "ram": 32, "accel": "vulkan", "recs": [{"use": "chat", "name": "Qwen3 14B", "fit": "fast", "tps": 23}, {"use": "code", "name": "Qwen3 14B", "fit": "fast", "tps": 23}, {"use": "vision", "name": "Qwen3-VL 8B", "fit": "fast", "tps": 35}, {"use": "docs", "name": "Qwen3 14B", "fit": "fast", "tps": 23}], "image": "Z-Image Turbo"}, {"id": "rtx4090", "label": "RTX 4090 · 64 Go", "gpu": "RTX 4090", "ram": 64, "accel": "cuda", "recs": [{"use": "chat", "name": "Qwen3 30B-A3B", "fit": "fast", "tps": 270}, {"use": "code", "name": "Qwen3-Coder 30B-A3B", "fit": "fast", "tps": 270}, {"use": "vision", "name": "Gemma 3 27B", "fit": "fast", "tps": 33}, {"use": "docs", "name": "Qwen3 30B-A3B", "fit": "fast", "tps": 270}], "image": "Z-Image Turbo"}]
+  const PROFILES = [{"id": "office", "label": "PC bureautique", "gpu": "Aucune carte dédiée", "ram": 8, "accel": "cpu", "recs": [{"use": "chat", "name": "Qwen3 4B", "fit": "slow", "tps": 9}, {"use": "code", "name": "Qwen3 4B", "fit": "slow", "tps": 9}, {"use": "vision", "name": null}, {"use": "docs", "name": "Qwen3 4B", "fit": "slow", "tps": 9}], "image": "Stable Diffusion 1.5"}, {"id": "gtx1060", "label": "GTX 1060 · 16 Go", "gpu": "GTX 1060 6GB", "ram": 16, "accel": "cuda", "recs": [{"use": "chat", "name": "Qwen3 4B", "fit": "fast", "tps": 42}, {"use": "code", "name": "Qwen2.5-Coder 7B", "fit": "hybrid", "tps": 15}, {"use": "vision", "name": "Qwen3-VL 4B", "fit": "fast", "tps": 32}, {"use": "docs", "name": "Granite 3.3 8B", "fit": "hybrid", "tps": 13}], "image": "Z-Image Turbo"}, {"id": "rtx3060ti", "label": "RTX 3060 Ti · 32 Go", "gpu": "RTX 3060 Ti", "ram": 32, "accel": "cuda", "recs": [{"use": "chat", "name": "Qwen3 30B-A3B", "fit": "hybrid", "tps": 15}, {"use": "code", "name": "Qwen3-Coder 30B-A3B", "fit": "hybrid", "tps": 15}, {"use": "vision", "name": "Qwen3-VL 4B", "fit": "fast", "tps": 75}, {"use": "docs", "name": "Qwen3 30B-A3B", "fit": "hybrid", "tps": 15}], "image": "Z-Image Turbo"}, {"id": "rx6700", "label": "RX 6700 XT · 32 Go", "gpu": "Radeon RX 6700 XT", "ram": 32, "accel": "vulkan", "recs": [{"use": "chat", "name": "Qwen3 14B", "fit": "fast", "tps": 23}, {"use": "code", "name": "Qwen2.5-Coder 14B", "fit": "fast", "tps": 23}, {"use": "vision", "name": "Qwen3-VL 8B", "fit": "fast", "tps": 35}, {"use": "docs", "name": "Qwen3 14B", "fit": "fast", "tps": 23}], "image": "Z-Image Turbo"}, {"id": "rtx4090", "label": "RTX 4090 · 64 Go", "gpu": "RTX 4090", "ram": 64, "accel": "cuda", "recs": [{"use": "chat", "name": "Qwen3 32B", "fit": "fast", "tps": 28}, {"use": "code", "name": "Qwen3-Coder 30B-A3B", "fit": "fast", "tps": 270}, {"use": "vision", "name": "Gemma 3 27B", "fit": "fast", "tps": 33}, {"use": "docs", "name": "Qwen3 30B-A3B", "fit": "fast", "tps": 270}], "image": "Z-Image Turbo"}]
   const plist = document.getElementById('plist'), pd = document.getElementById('pdetail')
   const render = i => {
     const p = PROFILES[i]
@@ -540,7 +541,7 @@ footer a:hover { color: var(--fg); }
       : `<div class="rec"><div class="u">${USE[r.use]}</div><div class="m" style="color:var(--muted)">Cloud gratuit</div><span class="badge b">Cloud</span><div class="s">Pas de modèle local adapté</div></div>`).join('')
     pd.innerHTML = `<div class="swap"><div class="phead"><h3>${p.label}</h3><span class="badge g">${accel}</span><span class="badge">${p.gpu}</span></div>
       <div class="recs">${recs}</div>
-      <div class="recs" style="grid-template-columns:1fr 1fr"><div class="rec"><div class="u">Images</div><div class="m">${p.image}</div><span class="badge g">Local</span></div><div class="rec"><div class="u">3D</div><div class="m">TRELLIS</div><span class="badge b">Cloud gratuit</span></div></div>
+      <div class="recs" style="grid-template-columns:1fr 1fr"><div class="rec"><div class="u">Images</div><div class="m">${p.image}</div><span class="badge g">Local</span></div><div class="rec"><div class="u">3D</div><div class="m">5 moteurs</div><span class="badge b">Cloud gratuit · sans clé</span></div></div>
       <p class="pnote">Vitesses estimées d'après la bande passante mémoire ; AI Studio les remplace par une mesure réelle après installation.</p></div>`
   }
   PROFILES.forEach((p, i) => { const b = document.createElement('button'); b.innerHTML = `${p.label}<small>${p.gpu} · ${p.ram} Go de RAM</small>`; b.onclick = () => render(i); plist.appendChild(b) })
