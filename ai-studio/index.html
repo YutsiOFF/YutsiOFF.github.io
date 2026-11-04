@@ -264,8 +264,8 @@ footer a:hover { color: var(--fg); }
     </div>
 
     <div class="stats">
-      <div class="stat reveal"><div class="n" data-count="31">0</div><div class="l">modèles locaux au catalogue</div></div>
-      <div class="stat reveal" style="--d:.08s"><div class="n" data-count="5">0</div><div class="l">moteurs 3D gratuits, sans clé</div></div>
+      <div class="stat reveal"><div class="n" data-count="35">0</div><div class="l">modèles locaux au catalogue</div></div>
+      <div class="stat reveal" style="--d:.08s"><div class="n" data-count="8">0</div><div class="l">moteurs 3D gratuits, sans clé</div></div>
       <div class="stat reveal" style="--d:.16s"><div class="n"><span data-count="0">0</span><small> €</small></div><div class="l">d'abonnement, jamais</div></div>
       <div class="stat reveal" style="--d:.24s"><div class="n"><span data-count="100">0</span><small> %</small></div><div class="l">local possible, hors ligne</div></div>
     </div>
@@ -289,8 +289,8 @@ footer a:hover { color: var(--fg); }
       <article class="card c3 reveal" style="--d:.08s">
         <div class="icon cloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H7a5 5 0 1 1 1.6-9.74A6 6 0 0 1 20 11.5a3.75 3.75 0 0 1-2.5 7.5Z"/></svg></div>
         <h3>Le meilleur du Cloud gratuit</h3>
-        <p>17 fournisseurs réellement gratuits, dont 3 utilisables <strong style="color:var(--fg)">sans clé ni compte</strong>. Un sélecteur unique, des quotas affichés honnêtement, et les offres d'essai rangées à part.</p>
-        <div class="tags"><span class="tag c">OVHcloud (sans clé)</span><span class="tag c">Kilo Gateway (sans clé)</span><span class="tag c">LLM7 (sans clé)</span><span class="tag c">Gemini</span><span class="tag c">Groq</span><span class="tag c">Cerebras</span><span class="tag c">OpenRouter</span><span class="tag c">Mistral</span><span class="tag c">+9</span></div>
+        <p>18 fournisseurs réellement gratuits, dont 3 utilisables <strong style="color:var(--fg)">sans clé ni compte</strong>. Un sélecteur unique, des quotas affichés honnêtement, et les offres d'essai rangées à part.</p>
+        <div class="tags"><span class="tag c">OVHcloud (sans clé)</span><span class="tag c">Kilo Gateway (sans clé)</span><span class="tag c">LLM7 (sans clé)</span><span class="tag c">Gemini</span><span class="tag c">Groq</span><span class="tag c">Cerebras</span><span class="tag c">OpenRouter</span><span class="tag c">Mistral</span><span class="tag c">Pollinations (DeepSeek)</span><span class="tag c">+9</span></div>
       </article>
 
       <article class="card c4 reveal">
@@ -323,8 +323,8 @@ footer a:hover { color: var(--fg); }
       <article class="card c4 reveal" style="--d:.08s">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m12 12 8-4.5M12 12v9M12 12 4 7.5"/></svg></div>
         <h3>Image ou texte → modèle 3D, découpé en parties</h3>
-        <p>5 moteurs gratuits sans clé : TRELLIS, TRELLIS.2, PartCrafter (directement en parties), TripoSG et Step1X-3D. Pendant la génération, des milliers de particules prennent la forme du modèle. Découpe, masque, renomme ou exporte chaque partie en GLB, OBJ ou STL.</p>
-        <div class="tags"><span class="tag c">TRELLIS</span><span class="tag c">TRELLIS.2</span><span class="tag c">PartCrafter</span><span class="tag c">TripoSG</span><span class="tag c">Step1X-3D</span></div>
+        <p>8 moteurs gratuits sans clé : TRELLIS, TRELLIS.2, PartCrafter (directement en parties), TripoSG, Step1X-3D, InstantMesh, Hi3DGen et Hunyuan3D-2.1. Pendant la génération, des milliers de particules prennent la forme du modèle. Découpe, masque, renomme ou exporte chaque partie en GLB, OBJ ou STL.</p>
+        <div class="tags"><span class="tag c">TRELLIS</span><span class="tag c">TRELLIS.2</span><span class="tag c">PartCrafter</span><span class="tag c">TripoSG</span><span class="tag c">Step1X-3D</span><span class="tag c">InstantMesh</span><span class="tag c">Hi3DGen</span><span class="tag c">Hunyuan3D</span></div>
         <div class="seg"><canvas id="seg" aria-hidden="true"></canvas></div>
       </article>
     </div>
@@ -541,7 +541,7 @@ footer a:hover { color: var(--fg); }
       : `<div class="rec"><div class="u">${USE[r.use]}</div><div class="m" style="color:var(--muted)">Cloud gratuit</div><span class="badge b">Cloud</span><div class="s">Pas de modèle local adapté</div></div>`).join('')
     pd.innerHTML = `<div class="swap"><div class="phead"><h3>${p.label}</h3><span class="badge g">${accel}</span><span class="badge">${p.gpu}</span></div>
       <div class="recs">${recs}</div>
-      <div class="recs" style="grid-template-columns:1fr 1fr"><div class="rec"><div class="u">Images</div><div class="m">${p.image}</div><span class="badge g">Local</span></div><div class="rec"><div class="u">3D</div><div class="m">5 moteurs</div><span class="badge b">Cloud gratuit · sans clé</span></div></div>
+      <div class="recs" style="grid-template-columns:1fr 1fr"><div class="rec"><div class="u">Images</div><div class="m">${p.image}</div><span class="badge g">Local</span></div><div class="rec"><div class="u">3D</div><div class="m">8 moteurs</div><span class="badge b">Cloud gratuit · sans clé</span></div></div>
       <p class="pnote">Vitesses estimées d'après la bande passante mémoire ; AI Studio les remplace par une mesure réelle après installation.</p></div>`
   }
   PROFILES.forEach((p, i) => { const b = document.createElement('button'); b.innerHTML = `${p.label}<small>${p.gpu} · ${p.ram} Go de RAM</small>`; b.onclick = () => render(i); plist.appendChild(b) })
